@@ -1,0 +1,15 @@
+[project]
+name = "sprint-starter"
+version = "0.1.0"
+description = "AI4Good Lab W1 eval sprint — write your product spec as runnable evals. No API key needed."
+requires-python = ">=3.11"
+dependencies = [
+    "pytest>=8.0",
+]
+
+[tool.uv]
+package = false
+
+[tool.pytest.ini_options]
+# Collect the eval file you write live (test_*.py), or an evals.py if you name it that.
+python_files = ["test_*.py", "evals.py", "*_evals.py"]
