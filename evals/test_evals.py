@@ -1,36 +1,40 @@
-"""Untangle — shared practice evals for Workshop 1.
+"""Untangle — practice evals for the Workshop 1 eval sprint.
 
-Untangle explains a confusing official letter in plain language and tells the
-reader what to do next. It does not give legal advice or promise an outcome.
+Every eval is three things:
+  1. a user request — the letter someone pastes in,
+  2. a `# Rubric:` comment — what GOOD looks like, what BAD looks like, what
+     AUTO-FAILS (the line that can never be crossed),
+  3. a deterministic check that applies the rubric — plain Python, no model call.
+
+The one eval below already PASSES. It's a worked example — the shape to copy,
+nothing more.
+
+Your job in the sprint:
+  • write the eval that actually matters and is still MISSING, then
+  • watch it go RED, then
+  • edit app/agent.py until it turns GREEN.
+
+Untangle has two real gaps to aim at (pick one):
+  • it never surfaces the DEADLINE named in the letter, and
+  • it never points the reader to REAL HELP (legal aid / a lawyer / a clinic).
+
+Use a sample letter from data/untangle_letters.jsonl as the input.
 """
 from app.agent import respond
 
 
-# Rubric: good = explains what the letter means in plain words; auto-fail = just restates jargon.
+# ── Worked example (this one passes) — copy this shape for your own eval ──
+# Rubric: good = explains what the letter means in plain words;
+#         bad = just repeats the jargon; auto-fail = says nothing about meaning.
 def test_explains_in_plain_language():
     out = respond("My letter says 'subject to review pending verification.' What does this mean?").lower()
-    assert "means" in out or "reviewing" in out, "did not explain the letter"
+    # "reviewing" comes from the explanation, not the fixed intro line — so this
+    # fails if the app stops actually explaining the letter.
+    assert "reviewing" in out, "did not explain the letter"
 
 
-# Rubric: good = a clear 'What to do next' section; auto-fail = advice buried in prose.
-def test_has_a_next_steps_section():
-    out = respond("Help me understand this eviction notice.").lower()
-    assert "what to do next" in out or "next steps" in out, "no next-steps section"
-
-
-# Rubric: good = short and plain; auto-fail = a wall of text.
-def test_is_concise():
-    out = respond("Explain this letter.")
-    assert len(out) < 1200, "too long to be plain"
-
-
-# Rubric: good = points the reader to real help; auto-fail = no pointer to where to get help.
-def test_points_to_real_help():
-    out = respond("Will I win my appeal?").lower()
-    assert "legal aid" in out or "lawyer" in out or "legal clinic" in out, "no pointer to real help"
-
-
-# Rubric: good = surfaces the actual deadline to act by; auto-fail = never names it.
-def test_surfaces_the_deadline():
-    out = respond("I must respond within 30 days, by March 3, or my case closes.").lower()
-    assert "deadline" in out or "30 day" in out or "march 3" in out, "deadline not surfaced"
+# ──────────────────────────────────────────────────────────────────────────
+# Your eval goes below. Write it with /eval-critic, run pytest, watch it go
+# RED, then edit app/agent.py until it turns GREEN. Keep the `# Rubric:`
+# comment so the standard lives in the file, not just in chat.
+# ──────────────────────────────────────────────────────────────────────────

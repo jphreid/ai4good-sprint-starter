@@ -1,6 +1,6 @@
 ---
 name: eval-critic
-description: Audit or generate a falsifiable, KEY-FREE eval set. In the Workshop-1 sprint, use AUDIT on the shared Untangle practice app: inspect evals/test_evals.py, use data/untangle_letters.jsonl, and tighten weak checks without API calls. Dual-mode — GENERATE can still draft evals from requirements; AUDIT critiques an eval file and hands back a tightened version.
+description: Generate or audit a falsifiable, KEY-FREE eval set. In the Workshop-1 sprint, use GENERATE to turn a requirement the shared Untangle app does not meet yet into a key-free pytest eval (it goes red), using data/untangle_letters.jsonl for a concrete case; the trainee then edits the app to turn it green. Dual-mode — AUDIT critiques an existing eval file and hands back a tightened version.
 ---
 
 # eval-critic — the spec as a runnable contract (sprint / no-key edition)
@@ -43,7 +43,7 @@ Before any code, the eval is a rubric. Three layers, in order:
 
 ## The contract every eval obeys (both modes)
 
-This repo's evals follow a fixed shape. `evals/conftest.py` and `pyproject.toml` collect `test_*.py`. The app is **Untangle**, a deliberately incomplete first draft in `app/agent.py`. It should produce a meaningful mixed result against the starter evals: some green, some red. Use `data/untangle_letters.jsonl` for concrete synthetic cases when adding or tightening evals.
+This repo's evals follow a fixed shape. `evals/conftest.py` and `pyproject.toml` collect `test_*.py`. The app is **Untangle**, a deliberately incomplete first draft in `app/agent.py`. The starter ships **one green worked example** that models the pattern. The trainee's job is to write a *new* eval for a behaviour Untangle is missing (it never surfaces the deadline a letter names, and never points to real help), watch it go **red**, then fix `app/agent.py` to turn it green. Use `data/untangle_letters.jsonl` for concrete synthetic cases.
 
 ```python
 import re
@@ -103,7 +103,7 @@ from app.agent import respond   # Untangle today; the real scaffold Wednesday us
    ```
    Expect a mixed result — green for behaviours Untangle already handles, red for real gaps. If something unexpectedly *passes*, check it isn't a can't-fail test (e.g. `assert len(out) > 0`).
 
-7. **Hand off.** State plainly which tests are red and why. On Wednesday the same loop moves from this shared practice app to the team's own scaffold.
+7. **Hand off to the green.** State plainly which test is red and why. Then point the trainee at the fix: edit `respond()` in `app/agent.py` to meet the requirement and re-run until it's green — without breaking the tests that already pass. On Wednesday the same loop moves from this shared practice app to the team's own scaffold.
 
 ---
 
@@ -129,4 +129,5 @@ Then **write the corrected `evals/test_evals.py`** and **run `uv run pytest eval
 - **Produce the file, then run it.** Both modes end in a real pytest result you actually saw (mixed green/red is the expected, healthy state today).
 - **Rubric before check. One criterion per test. Assert messages on everything.** If you can't say what good and bad look like, you haven't specified the requirement yet.
 - **Safety/values evals don't transfer.** When the domain changed, demand new ones; don't wave through inherited medical evals on a non-medical app.
-- **You write or tighten tests, not the app.** Building `respond()` to green is Workshop 2's job. Stay in your lane: make the spec falsifiable and key-free.
+- **Your lane is the eval; then hand off to the green.** Write or tighten the test until it falsifiably captures the requirement and goes red, then point the trainee at `app/agent.py` to make `respond()` meet it ("now edit the app; re-run until green"). Don't silently rewrite the app inside this skill — but don't treat turning red→green as out of scope either; closing that loop is the Workshop-1 sprint.
+- **Markdown you write is for review.** If you emit a critique file, keep it short and scannable — a reader should grasp what's red and why in under a minute.
