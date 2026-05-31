@@ -28,6 +28,15 @@ evals will go **RED** against the stub — **red is the deliverable.** Do not
 "fix" the stub to make tests pass; the reds are the requirements the team builds
 to green on Wednesday.
 
+## The two review-board skills in this repo
+
+`.claude/skills/` ships **`pm-critic`** (scope → `product/ai-canvas.md` + `one-pager.md`,
+key-free) and **`eval-critic`** (requirements → `evals/test_evals.py`, key-free,
+deterministic, judge-evals `skip`-ped for Wednesday). When a team runs `/pm-critic`
+then `/eval-critic`, that IS the sprint. The no-API-key constraint above governs
+`/eval-critic`'s output — never let it emit `judge()`/SDK calls. The plain-prompt
+flow below is the same loop for teams who prefer to drive Claude directly.
+
 ## The flow (mirror the live demo)
 
 1. Help the team write **5 acceptance criteria** for their project — one each:

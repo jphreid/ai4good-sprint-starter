@@ -19,30 +19,20 @@ You have Claude Code, so let it do the work. Open Claude Code in this folder:
 claude
 ```
 
-## The sprint (do what you watched)
+## The sprint — run two skills from the review board
 
-**1 — Brainstorm 5 criteria + rubrics.** Paste this into Claude Code, filling in your project:
+This repo ships two of the review-board skills in `.claude/skills/`. Invoke them by
+name in Claude Code.
 
-```
-I'm working on an AI4Good project: <one sentence>.
-Our users are: <who they are>.
-It must NOT <the thing it should refuse — e.g. diagnose, give legal advice>.
+**1 — Scope it.** Run `/pm-critic`. It scopes your project — one user, one job, one
+measurable metric, the augment-vs-automate call — and writes `product/ai-canvas.md`
++ `product/one-pager.md`. Tell it your project in a sentence and let it ask.
 
-Help me write 5 acceptance criteria — one each: happy path, edge case,
-values/safety (something it must REFUSE), behavioral (how it responds),
-UX (the output format). One sentence each, testable (a reader can say yes/no).
-For each, give a one-line rubric: good answer / bad answer / auto-fail.
-```
-
-**2 — Turn them into runnable evals.** Then:
-
-```
-Now turn these into executable pytest evals in evals/test_evals.py, importing
-respond from app.agent. One test per criterion, with a # Rubric: comment above
-each. I have no API key — use deterministic checks only (substring, regex,
-length, timing). If a criterion truly needs an LLM judge, write the test but
-mark it @pytest.mark.skip for Wednesday.
-```
+**2 — Spec it.** Run `/eval-critic`. It turns your requirements into runnable evals
+in `evals/test_evals.py` — one per criterion (happy path · edge · values/safety ·
+behavioral · UX), each with a `# Rubric:` comment. **No API key needed:** it writes
+deterministic checks (substring, regex, length, timing) and `skip`s any
+genuinely-subjective eval for Wednesday.
 
 **3 — Run them:**
 
@@ -50,8 +40,13 @@ mark it @pytest.mark.skip for Wednesday.
 uv run pytest evals/ -v --tb=line
 ```
 
-(Or just ask Claude Code to run them.) Expect **red** (and maybe a couple
-skipped) — your app is still a stub. Every red is a requirement.
+(Or just ask Claude Code to run them.) Expect **mostly red**, a couple **skipped** —
+your app is still a stub. Every red is a requirement.
+
+> Prefer to drive Claude directly instead of the skills? Same loop you watched in
+> the demo works too: ask it to brainstorm 5 criteria + rubrics, then "turn these
+> into deterministic pytest evals against `app.agent.respond`, no API key, skip
+> judge-evals for Wednesday."
 
 ## Hand it in
 
