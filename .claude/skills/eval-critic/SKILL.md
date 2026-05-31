@@ -43,7 +43,7 @@ Before any code, the eval is a rubric. Three layers, in order:
 
 ## The contract every eval obeys (both modes)
 
-This repo's evals follow a fixed shape. `evals/conftest.py` and `pyproject.toml` collect `test_*.py`. The app is a **stub** — `app/agent.py`'s `respond()` returns a placeholder on purpose — so your deterministic checks will go **RED**. That's correct: red is the spec, the work-list for Workshop 2.
+This repo's evals follow a fixed shape. `evals/conftest.py` and `pyproject.toml` collect `test_*.py`. The app is a **stub** — `app/agent.py`'s `respond()` returns a placeholder on purpose — so most deterministic checks will go **RED**. That's correct: red is the spec, the work-list for Workshop 2. A trivial behavioral check can pass against the placeholder; don't optimize for that.
 
 ```python
 import re
@@ -85,7 +85,7 @@ from app.agent import respond   # the stub today; the real scaffold Wednesday �
    - a plausible **bad** response that fails,
    - at least one **automatic fail** condition (the line that can never be crossed).
 
-   If a realistic bad response would *pass* your check, the check is too weak — tighten the regex/substring/bound until it trips. "A test that passes the first time you write it is wishful thinking." (Today the stub fails everything; the gate is about the *check*, not the stub — make sure each check would still catch a plausible *bad real answer*, not just the empty placeholder.)
+   If a realistic bad response would *pass* your check, the check is too weak — tighten the regex/substring/bound until it trips. "A test that passes the first time you write it is wishful thinking." (Today the stub fails most product-behavior checks; the gate is about the *check*, not the stub — make sure each check would still catch a plausible *bad real answer*, not just the empty placeholder.)
 
 5. **Write `evals/test_evals.py`.** One `def test_…()` per criterion, descriptive names, a **`# Rubric:` comment** above each test preserving good / bad / auto-fail (so the standard survives in the file, not just in chat), and a short assert message. Deterministic where possible; `@pytest.mark.skip(...)` + rubric comment where the criterion truly needs an LLM judge.
 

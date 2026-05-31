@@ -4,8 +4,9 @@
 runnable tests, run them, and catch a failure. Now do it for *your* AI4Good project.
 
 You're not building the app today — you're writing the **spec** for it, as evals.
-Run them and they go **red**. That's the point: **red is your spec.** Wednesday
-you build until they turn green.
+Run them and they go **red**. That's the point: **red is your spec.** If one
+trivial behavioral check passes (for example, "the response is short"), that's
+normal; the app is still empty. Wednesday you build until the reds turn green.
 
 ## Setup (1 min)
 
@@ -41,7 +42,8 @@ uv run pytest evals/ -v --tb=line
 ```
 
 (Or just ask Claude Code to run them.) Expect **mostly red**, a couple **skipped** —
-your app is still a stub. Every red is a requirement.
+your app is still a stub. Every red is a requirement. A trivial pass is not the
+goal; the useful output is the list of reds.
 
 > Prefer to drive Claude directly instead of the skills? Same loop you watched in
 > the demo works too: ask it to brainstorm 5 criteria + rubrics, then "turn these

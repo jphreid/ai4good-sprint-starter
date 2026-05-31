@@ -24,10 +24,11 @@ no Anthropic SDK, no `client.messages.create`, no `JUDGE_MODEL`.
 ## What `respond()` is right now
 
 `app/agent.py` ships a **stub** `respond()` that returns a placeholder. That's on
-purpose: today the team writes the *spec*, not the app. So the deterministic
-evals will go **RED** against the stub — **red is the deliverable.** Do not
-"fix" the stub to make tests pass; the reds are the requirements the team builds
-to green on Wednesday.
+purpose: today the team writes the *spec*, not the app. So most deterministic
+evals will go **RED** against the stub — **red is the deliverable.** A trivial
+behavioral eval may pass (for example, a length or timing bound), but that is not
+the point. Do not "fix" the stub to make tests pass; the reds are the
+requirements the team builds to green on Wednesday.
 
 ## The two review-board skills in this repo
 
