@@ -1,6 +1,6 @@
 ---
 name: eval-critic
-description: Turn product requirements into rubrics and a falsifiable, KEY-FREE eval set, or audit an existing eval file for missing rubrics, soft/compound/vague tests, and tests that can't fail. Dual-mode — GENERATE drafts a good/bad rubric for each requirement, then writes evals/test_evals.py using deterministic checks only (no API key); AUDIT critiques an eval file and hands back a tightened version. Use when you have a project idea or acceptance criteria and need the spec in runnable form. This is the Workshop-1 review-board skill, in its sprint (no-API-key) form.
+description: Audit or generate a falsifiable, KEY-FREE eval set. In the Workshop-1 sprint, use AUDIT on the shared Untangle practice app: inspect evals/test_evals.py, use data/untangle_letters.jsonl, and tighten weak checks without API calls. Dual-mode — GENERATE can still draft evals from requirements; AUDIT critiques an eval file and hands back a tightened version.
 ---
 
 # eval-critic — the spec as a runnable contract (sprint / no-key edition)
@@ -43,13 +43,13 @@ Before any code, the eval is a rubric. Three layers, in order:
 
 ## The contract every eval obeys (both modes)
 
-This repo's evals follow a fixed shape. `evals/conftest.py` and `pyproject.toml` collect `test_*.py`. The app is a **stub** — `app/agent.py`'s `respond()` returns a placeholder on purpose — so most deterministic checks will go **RED**. That's correct: red is the spec, the work-list for Workshop 2. A trivial behavioral check can pass against the placeholder; don't optimize for that.
+This repo's evals follow a fixed shape. `evals/conftest.py` and `pyproject.toml` collect `test_*.py`. The app is **Untangle**, a deliberately incomplete first draft in `app/agent.py`. It should produce a meaningful mixed result against the starter evals: some green, some red. Use `data/untangle_letters.jsonl` for concrete synthetic cases when adding or tightening evals.
 
 ```python
 import re
 import time
 import pytest
-from app.agent import respond   # the stub today; the real scaffold Wednesday — same import
+from app.agent import respond   # Untangle today; the real scaffold Wednesday uses the same import
 ```
 
 - **One criterion per test.** If a test asserts two things, it can pass for the wrong reason. Split it.
@@ -85,7 +85,7 @@ from app.agent import respond   # the stub today; the real scaffold Wednesday �
    - a plausible **bad** response that fails,
    - at least one **automatic fail** condition (the line that can never be crossed).
 
-   If a realistic bad response would *pass* your check, the check is too weak — tighten the regex/substring/bound until it trips. "A test that passes the first time you write it is wishful thinking." (Today the stub fails most product-behavior checks; the gate is about the *check*, not the stub — make sure each check would still catch a plausible *bad real answer*, not just the empty placeholder.)
+   If a realistic bad response would *pass* your check, the check is too weak — tighten the regex/substring/bound until it trips. "A test that passes the first time you write it is wishful thinking." The gate is about the *check*: make sure each check catches a plausible bad answer from the first-draft Untangle app.
 
 5. **Write `evals/test_evals.py`.** One `def test_…()` per criterion, descriptive names, a **`# Rubric:` comment** above each test preserving good / bad / auto-fail (so the standard survives in the file, not just in chat), and a short assert message. Deterministic where possible; `@pytest.mark.skip(...)` + rubric comment where the criterion truly needs an LLM judge.
 
@@ -101,9 +101,9 @@ from app.agent import respond   # the stub today; the real scaffold Wednesday �
    ```bash
    uv run pytest evals/ -v --tb=line
    ```
-   Expect **mostly red**, with the judge-evals **skipped** — because `respond()` is still a stub. Each red is a requirement for Workshop 2. If something unexpectedly *passes*, check it isn't a can't-fail test (e.g. a timing check the instant stub trivially satisfies).
+   Expect a mixed result — green for behaviours Untangle already handles, red for real gaps. If something unexpectedly *passes*, check it isn't a can't-fail test (e.g. `assert len(out) > 0`).
 
-7. **Hand off.** State plainly which tests are red and why. On Wednesday this file drops into the scaffold at `evals/evals.py` and the team builds `respond()` until the reds turn green.
+7. **Hand off.** State plainly which tests are red and why. On Wednesday the same loop moves from this shared practice app to the team's own scaffold.
 
 ---
 
@@ -126,7 +126,7 @@ Then **write the corrected `evals/test_evals.py`** and **run `uv run pytest eval
 ## Rules
 
 - **Key-free, always.** No `anthropic` import, no API call. Deterministic checks run; subjective ones are written and `skip`-ped for Wednesday.
-- **Produce the file, then run it.** Both modes end in a real pytest result you actually saw (red + skipped is the expected, healthy state today).
+- **Produce the file, then run it.** Both modes end in a real pytest result you actually saw (mixed green/red is the expected, healthy state today).
 - **Rubric before check. One criterion per test. Assert messages on everything.** If you can't say what good and bad look like, you haven't specified the requirement yet.
 - **Safety/values evals don't transfer.** When the domain changed, demand new ones; don't wave through inherited medical evals on a non-medical app.
-- **You write the tests, not the app.** Building `respond()` to green is Workshop 2's job. Stay in your lane: make the spec falsifiable, key-free, and red.
+- **You write or tighten tests, not the app.** Building `respond()` to green is Workshop 2's job. Stay in your lane: make the spec falsifiable and key-free.

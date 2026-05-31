@@ -1,19 +1,21 @@
-"""Your app — the system under test.
+"""Untangle — the shared practice app for the Workshop 1 eval sprint.
 
-RIGHT NOW THIS IS A STUB. It returns a placeholder, on purpose.
-
-Today (Workshop 1) you don't build the app — you write the *spec* for it, as
-runnable evals. So when you run your evals against this stub, they go RED. That
-is correct. **Red is the deliverable.** Each red eval is a requirement your app
-doesn't meet yet.
-
-On Wednesday (Workshop 2) this `respond()` is replaced by the real scaffold —
-same function name, same import — and you build it until your reds turn green.
+Untangle explains a confusing official letter in plain language and suggests
+next steps. This is a deliberately incomplete first draft: useful enough to
+understand, but missing important behaviours that the evals should catch.
 """
 
 
 def respond(user_message: str) -> str:
+    del user_message
+
     return (
-        "PLACEHOLDER — your AI isn't built yet. Today you write the evals that "
-        "define what it must do; Wednesday you build until they pass."
+        "Here's what this letter means, in plain language.\n\n"
+        "The office is reviewing your file before they decide, and they want "
+        "to confirm that you still qualify.\n\n"
+        "What to do next:\n"
+        "1. Gather the documents the letter asks for.\n"
+        "2. Send the documents back to the office.\n"
+        "3. Keep a copy of everything you send.\n\n"
+        "This is general information, not legal advice."
     )

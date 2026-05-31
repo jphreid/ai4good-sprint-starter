@@ -1,59 +1,73 @@
-# Eval Sprint — write your product's spec as runnable evals
+# Eval Sprint — shared Untangle practice app
 
-**20 minutes. No API key needed.** You just watched a PM turn 5 requirements into
-runnable tests, run them, and catch a failure. Now do it for *your* AI4Good project.
+**20 minutes. No API key needed.** You just watched a PM turn requirements into
+runnable tests, run them, and catch a failure. Now you do the same loop on a
+shared practice app: **Untangle**, a plain-language explainer for confusing
+official letters.
 
-You're not building the app today — you're writing the **spec** for it, as evals.
-Run them and they go **red**. That's the point: **red is your spec.** If one
-trivial behavioral check passes (for example, "the response is short"), that's
-normal; the app is still empty. Wednesday you build until the reds turn green.
+You're not inventing your own AI4Good project today. The app is already here and
+it is not empty: `app/agent.py` contains a deliberately incomplete first draft.
+The evals in `evals/test_evals.py` show what it already does and what it misses.
+The synthetic sample letters in `data/untangle_letters.jsonl` give you concrete
+cases to inspect or turn into extra evals. Wednesday is when you apply the same
+loop to your own project.
 
 ## Setup (1 min)
 
 ```bash
 git clone https://github.com/jphreid/ai4good-sprint-starter.git && cd ai4good-sprint-starter
+uv run pytest evals/ -v --tb=line
 ```
 
-You have Claude Code, so let it do the work. Open Claude Code in this folder:
+Expected result: **3 passed, 2 failed**. The app explains the letter, gives next
+steps, and stays concise. It fails to point to real help and to surface a
+deadline. Those reds are the product gaps.
+
+Open Claude Code in this folder:
 
 ```bash
 claude
 ```
 
-## The sprint — run two skills from the review board
+## The sprint — inspect and improve the spec
 
-This repo ships two of the review-board skills in `.claude/skills/`. Invoke them by
-name in Claude Code.
+This repo ships two review-board skills in `.claude/skills/`. For this practice
+sprint, the useful one is `/eval-critic`.
 
-**1 — Scope it.** Run `/pm-critic`. It scopes your project — one user, one job, one
-measurable metric, the augment-vs-automate call — and writes `product/ai-canvas.md`
-+ `product/one-pager.md`. Tell it your project in a sentence and let it ask.
+**1 — Read the app.** Open `app/agent.py`. Notice it is a first draft, not a
+placeholder.
 
-**2 — Spec it.** Run `/eval-critic`. It turns your requirements into runnable evals
-in `evals/test_evals.py` — one per criterion (happy path · edge · values/safety ·
-behavioral · UX), each with a `# Rubric:` comment. **No API key needed:** it writes
-plain deterministic checks (a substring like `"next step" in out`, length, timing) and `skip`s any
-genuinely-subjective eval for Wednesday.
+**2 — Read the evals.** Open `evals/test_evals.py`. Each eval has a user request,
+a `# Rubric:` comment, and a deterministic check.
 
-**3 — Run them:**
+**3 — Pick one sample letter.** Open `data/untangle_letters.jsonl`. Choose one
+case where the expected deadline, action, or risk matters.
+
+**4 — Audit the evals with Claude Code.**
+
+```text
+/eval-critic
+Audit evals/test_evals.py for Untangle. Keep it key-free. Tell me which evals
+are strong, which are weak, and add or tighten one eval using one sample from
+data/untangle_letters.jsonl if a bad answer could still pass.
+```
+
+**5 — Run them again.**
 
 ```bash
 uv run pytest evals/ -v --tb=line
 ```
 
-(Or just ask Claude Code to run them.) Expect **mostly red**, a couple **skipped** —
-your app is still a stub. Every red is a requirement. A trivial pass is not the
-goal; the useful output is the list of reds.
-
-> Prefer to drive Claude directly instead of the skills? Same loop you watched in
-> the demo works too: ask it to brainstorm 5 criteria + rubrics, then "turn these
-> into deterministic pytest evals against `app.agent.respond`, no API key, skip
-> judge-evals for Wednesday."
+The goal is not to make everything green today. The goal is to understand the
+loop: rubric -> eval -> red/green signal -> product decision.
 
 ## Hand it in
 
-Commit `evals/test_evals.py`, or paste it into your team's shared doc / the
-workshop Slack. **Bring it Wednesday** — it drops into the scaffold and you watch
-the red turn green.
+Paste one line in the workshop chat:
 
-> The modern PM artifact isn't a PRD. It's an eval set.
+```text
+Untangle: green = ___ / red = ___ / eval I would add or tighten = ___
+```
+
+> The modern PM artifact is not just a PRD. It is an eval set that makes the
+> product promise checkable.
