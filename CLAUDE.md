@@ -10,12 +10,13 @@ Trainees have **Claude Code, but no Anthropic API key.** So every eval you write
 **must run with `uv run pytest` using only the standard library** — no network,
 no Anthropic SDK, no `client.messages.create`, no `JUDGE_MODEL`.
 
-- **Write deterministic checks only:** substring (`"911" in out`), regex
-  (a URL / citation pattern), length, `time.time()` timing, simple language
-  heuristics. These are exact and never flaky — they ARE the contract.
+- **Prefer plain substring checks** — `"911" in out`, `"next step" in out.lower()`.
+  Exact, never flaky, anyone can read them. Reach for a regex only when a plain
+  `in` genuinely can't express it. Length and `time.time()` timing are fine too.
+  These are the contract. Keep them simple — 1–2 reds per eval, not a clever regex.
 - **For a criterion that genuinely needs an LLM judge** (e.g. "is this
   empathetic?"), still write the test, but mark it
-  `@pytest.mark.skip(reason="LLM-judge eval — wire up Wednesday with the scaffold + API key")`
+  `@pytest.mark.skip(reason="needs an LLM judge — wire up Wednesday")`
   and leave a `# Rubric:` comment. It's captured for Wednesday, and it won't
   error today for lack of a key.
 - **Never** import `anthropic` or add an `ANTHROPIC_API_KEY` dependency.

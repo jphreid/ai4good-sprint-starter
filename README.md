@@ -31,7 +31,7 @@ measurable metric, the augment-vs-automate call — and writes `product/ai-canva
 **2 — Spec it.** Run `/eval-critic`. It turns your requirements into runnable evals
 in `evals/test_evals.py` — one per criterion (happy path · edge · values/safety ·
 behavioral · UX), each with a `# Rubric:` comment. **No API key needed:** it writes
-deterministic checks (substring, regex, length, timing) and `skip`s any
+plain deterministic checks (a substring like `"next step" in out`, length, timing) and `skip`s any
 genuinely-subjective eval for Wednesday.
 
 **3 — Run them:**

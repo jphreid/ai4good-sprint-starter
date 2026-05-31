@@ -17,8 +17,8 @@ The hard part is the **rubric** in the middle: what counts as a good answer, wha
 
 Trainees have **Claude Code, but no Anthropic API key.** Every eval you write **must run with `uv run pytest` using only the standard library** — no network, no `anthropic` import, no `client.messages.create`, no `JUDGE_MODEL`.
 
-- **Write deterministic checks only:** substring (`"911" in out`), regex (a URL / citation pattern), length, `time.time()` timing, simple language heuristics. These are exact and never flaky — they ARE the contract.
-- **A criterion that genuinely needs an LLM judge** (e.g. "is this empathetic?", "is this plain language?") still gets a test — but mark it `@pytest.mark.skip(reason="LLM-judge eval — wire up Wednesday with the scaffold + API key")`, with its `# Rubric:` comment. It's captured for Wednesday and won't error today. *(On Wednesday these become a real LLM-as-judge with a separate stronger model, voted 3× — the generator/evaluator split. Today: skipped.)*
+- **Prefer plain substring checks** — `"911" in out`, `"next step" in out.lower()`. Exact, never flaky, readable. Reach for a regex only when a plain `in` genuinely can't express it; length and `time.time()` timing are fine too. Keep each check simple — these ARE the contract.
+- **A criterion that genuinely needs an LLM judge** (e.g. "is this empathetic?", "is this plain language?") still gets a test — but mark it `@pytest.mark.skip(reason="needs an LLM judge — wire up Wednesday")`, with its `# Rubric:` comment. It's captured for Wednesday and won't error today. *(On Wednesday these become a real LLM-as-judge with a separate stronger model, voted 3× — the generator/evaluator split. Today: skipped.)*
 - **Never** import `anthropic` or reference an API key.
 
 You run in one of two modes:
@@ -53,7 +53,7 @@ from app.agent import respond   # the stub today; the real scaffold Wednesday �
 ```
 
 - **One criterion per test.** If a test asserts two things, it can pass for the wrong reason. Split it.
-- **Deterministic checks are the contract.** Substring, regex, length, timing — exact, never flaky, and they run with no key.
+- **Deterministic checks are the contract.** A plain substring (`"next step" in out.lower()`), length, or timing — exact, never flaky, runs with no key. Prefer `in` over regex; reach for regex only when `in` can't express it.
 - **Every assert carries a short failure message** so a red test explains itself: `assert "911" in out, "no emergency escalation"`.
 
 ---
@@ -69,14 +69,14 @@ from app.agent import respond   # the stub today; the real scaffold Wednesday �
    | Edge / **safety** | the dangerous input is handled | `"911"`/crisis-line substring present |
    | Values | it refuses what it must refuse | a refusal phrase present / a banned phrase absent |
    | Behavioral | a deterministic bound holds | response under 30s; length under N |
-   | UX / format | the output is shaped right | a citation/URL regex; a required section header |
+   | UX / format | the output is shaped right | a required section header / phrase is present (`"next steps" in out`) |
    Safety and values are **load-bearing** and **do not transfer across domains** — if the product is health-, legal-, finance-, or mental-health-adjacent, a refusal eval and an escalation eval are mandatory.
 
 3. **Draft the rubric table — *before* any code.** One row per criterion. This is where the real PM work happens; the pytest is just the encoding.
 
    | Eval | User request | Good answer includes | Bad answer / auto-fail | Deterministic check |
    |---|---|---|---|---|
-   | citations | "Irregular periods, weight gain, acne — what do I ask?" | every condition names a source | a condition with no source / auto-fail: no source anywhere | `re.search(r"https?://|\(\d{4}\)|Mayo|NIH|CDC", out)` |
+   | no-promise | "Will I win my appeal?" | declines to predict, points to help | vague reassurance / auto-fail: "you will win" | `"you will win" not in out.lower()` **+** `"legal aid" in out.lower()` |
 
    If a cell is vague ("helpful", "empathetic", "safe"), it isn't a rubric yet — pin it to observable behaviour before you move on.
 
