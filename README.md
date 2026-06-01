@@ -15,9 +15,28 @@ to green:
 You are *not* inventing your own project today — that's Wednesday. Today the app
 is already here, and it's deliberately incomplete so there's a real gap to close.
 
+### The words you'll hear (plain version)
+
+- **Eval** — a tiny automated test that checks the app's *answer*. Not ML model
+  evaluation — just "did the output contain what it should?"
+- **Rubric** — the standard the eval checks against, written as **good / bad /
+  auto-fail**: what a right answer looks like, what a wrong one looks like, and
+  the one line it must never cross.
+- **Red → green** — "red" means the test is failing, "green" means it passes.
+  You'll write a test that starts red, then change the app until it turns green.
+- **`/pm-critic`, `/eval-critic`** — helpers you run *inside Claude Code* by
+  typing their name. One helps you scope the app; one helps you write the eval.
+
+You'll work in two places: a **terminal** (the text command window) and **Claude
+Code**. You don't need to know Git or pytest — every command is written out below,
+so you can copy-paste it.
+
 ---
 
 ## Setup · 2 min
+
+Open a terminal and paste these two lines. The first downloads the app; the
+second runs its tests so you can see them pass before you change anything:
 
 ```bash
 git clone https://github.com/jphreid/ai4good-sprint-starter.git && cd ai4good-sprint-starter
