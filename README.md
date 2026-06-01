@@ -89,6 +89,26 @@ push back where it's weak:
 - **Who's in control** — does Untangle *decide for* the person, or *help them* decide and act? (It's high-stakes — that should point you one way.)
 - **Worst wrong answer** — picture someone acting on a bad output. What's the damage?
 
+**Stuck? Here's one strong fill** — make it your own:
+
+```text
+/pm-critic
+Scope Untangle and write the AI Canvas + a one-pager. Here's my thinking —
+push back where it's weak:
+
+• What Untangle produces from a letter: a short action brief, in plain language —
+  what the letter means, the action it requires, and the deadline to act by (and,
+  when serious, where to get real help).
+• The ONE thing that makes its answer "good" (something you could check): when the
+  letter names a deadline, the brief surfaces that exact deadline (the date or
+  "within N days") — and never invents one when the letter has none.
+• Who stays in control of the real decision — the person, or the app? the person.
+  Untangle explains and surfaces; it never decides, gives legal advice, or
+  promises an outcome.
+• The worst thing a wrong answer could cause: it drops or misstates the deadline,
+  so the person misses a hearing or loses benefits.
+```
+
 `/pm-critic` turns your answers into **`product/ai-canvas.md`** + **`product/one-pager.md`**
 and flags anything thin. Open them and read the prediction, the one success
 metric, and the augment-vs-automate call.
