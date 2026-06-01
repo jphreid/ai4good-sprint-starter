@@ -97,13 +97,9 @@ from app.agent import respond   # Untangle today; the real scaffold Wednesday us
        assert "you have" not in out.lower(), "diagnosed instead of suggesting a question"
    ```
 
-6. **Run it.** This is non-negotiable — an unrun eval set is not a contract:
-   ```bash
-   uv run pytest evals/ -v --tb=line
-   ```
-   Expect a mixed result — green for behaviours Untangle already handles, red for real gaps. If something unexpectedly *passes*, check it isn't a can't-fail test (e.g. `assert len(out) > 0`).
+6. **Hand the file back — don't run it.** Running `uv run pytest evals/ -v --tb=line` is the **trainee's** step (it's in the README), and watching it go red is their moment — don't pre-empt it. Before you hand off, reason about the check so you're confident it *will* go red on the first-draft app: name a plausible bad answer it catches, and make sure it isn't a can't-fail test (e.g. `assert len(out) > 0`). Then tell them: "run `uv run pytest evals/ -v --tb=line` — your new test should go red."
 
-7. **Hand off to the green.** State plainly which test is red and why. Then point the trainee at the fix: edit `respond()` in `app/agent.py` to meet the requirement and re-run until it's green — without breaking the tests that already pass. On Wednesday the same loop moves from this shared practice app to the team's own scaffold.
+7. **Hand off to the green.** Say which test you expect to be red and why. Then point the trainee at the fix: edit `respond()` in `app/agent.py` to meet the requirement and re-run until it's green — without breaking the tests that already pass. On Wednesday the same loop moves from this shared practice app to the team's own scaffold.
 
 ---
 
@@ -119,14 +115,14 @@ Go test by test and flag each anti-pattern. Quote the line, name the defect, giv
 - **Needs-a-key** — the test imports `anthropic` / calls an API / uses `judge()`. There's no key in the sprint — convert it to a deterministic check, or mark it `@pytest.mark.skip` for Wednesday.
 - **Coverage hole** — map tests to the five types; call out missing safety/values explicitly, by name.
 
-Then **write the corrected `evals/test_evals.py`** and **run `uv run pytest evals/ -v`**. End with a 3–5 line verdict: what was contracting nothing, what you changed, what's red and why that's correct.
+Then **write the corrected `evals/test_evals.py`** and hand it back — the trainee runs `uv run pytest evals/ -v` themselves. End with a 3–5 line verdict: what was contracting nothing, what you changed, and which test you expect to be red and why that's correct.
 
 ---
 
 ## Rules
 
 - **Key-free, always.** No `anthropic` import, no API call. Deterministic checks run; subjective ones are written and `skip`-ped for Wednesday.
-- **Produce the file, then run it.** Both modes end in a real pytest result you actually saw (mixed green/red is the expected, healthy state today).
+- **Produce the file — the trainee runs it.** Don't run `pytest` yourself: writing the eval is your job, running it (and watching it go red) is the trainee's step in the README. Reason about the check so you're confident it *will* go red, then hand off.
 - **Rubric before check. One criterion per test. Assert messages on everything.** If you can't say what good and bad look like, you haven't specified the requirement yet.
 - **Safety/values evals don't transfer.** When the domain changed, demand new ones; don't wave through inherited medical evals on a non-medical app.
 - **Your lane is the eval; then hand off to the green.** Write or tighten the test until it falsifiably captures the requirement and goes red, then point the trainee at `app/agent.py` to make `respond()` meet it ("now edit the app; re-run until green"). Don't silently rewrite the app inside this skill — but don't treat turning red→green as out of scope either; closing that loop is the Workshop-1 sprint.

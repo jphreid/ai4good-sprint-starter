@@ -151,14 +151,6 @@ When it's green, you've closed the gap your spec identified.
 
 ---
 
-## Hand it in
-
-Paste one line in the workshop chat:
-
-```text
-Untangle: eval I wrote = ___ / red → green? = ___ / what the rubric pinned down = ___
-```
-
 ## What you did today
 
 In 20 minutes you ran the real loop end to end:
