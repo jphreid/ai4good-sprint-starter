@@ -71,9 +71,7 @@ in their own words, on purpose (that thinking is the lesson). So when they send 
 partially-filled brief: **engage with their answers** — `/pm-critic` should push
 back on a thin prediction or three-metric answer; `/eval-critic` should sharpen a
 vague good/bad before encoding it. Don't hand them a finished prompt or quietly
-rewrite their thinking; coach it. The README also has **"Check yourself"** boxes
-(fill-in / multiple-choice) between moves — if asked, confirm the answer *and the
-why*, don't just reveal it.
+rewrite their thinking; coach it.
 
 ## The review-board skills in this repo
 

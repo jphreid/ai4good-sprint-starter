@@ -93,21 +93,6 @@ push back where it's weak:
 and flags anything thin. Open them and read the prediction, the one success
 metric, and the augment-vs-automate call.
 
-> ### ✅ Check yourself
-> **a)** Fill the blank — Untangle should **\_\_\_\_\_\_** the person (it helps
-> them act), not **\_\_\_\_\_\_** the decision for them.
-> **b)** Which is the *one* success metric a good spec names? (pick one)
-> &nbsp;&nbsp;1. "users feel happy"
-> &nbsp;&nbsp;2. "does the explanation surface the action + deadline the letter requires?"
-> &nbsp;&nbsp;3. "the model is fast"
->
-> <details><summary>answers</summary>
->
-> **a)** *augment* / *automate* — Untangle **augments**; the person still acts.
-> **b)** **2** — it's one thing you can check on a fixed set of letters. "Happy"
-> and "fast" aren't the core promise. That checkable thing is what becomes your eval.
-> </details>
-
 ---
 
 ## Move 2 · Write one eval with `/eval-critic` · 8 min
@@ -149,22 +134,6 @@ uv run pytest evals/ -v --tb=line
 Your new eval goes **red** — the app doesn't do this yet. **That red is the
 point:** the requirement is now a check the app must pass.
 
-> ### ✅ Check yourself
-> **a)** Fill the blanks — a rubric names what a **\_\_\_\_** answer looks like,
-> what a **\_\_\_\_** answer looks like, and one **\_\_\_\_-\_\_\_\_** condition
-> that can never be crossed.
-> **b)** Which check actually *tests* the requirement? (pick one)
-> &nbsp;&nbsp;1. `assert len(out) > 0`
-> &nbsp;&nbsp;2. `assert "deadline" in out.lower() or "30 day" in out.lower()`
-> &nbsp;&nbsp;3. `assert out is not None`
->
-> <details><summary>answers</summary>
->
-> **a)** **good** / **bad** / **auto-fail**.
-> **b)** **2** — it fails on the current app and passes only once the deadline is
-> surfaced. 1 and 3 pass no matter what the app says, so they test *nothing*.
-> </details>
-
 ---
 
 ## Move 3 · Turn it green · 5 min
@@ -179,16 +148,6 @@ uv run pytest evals/ -v --tb=line
 ```
 
 When it's green, you've closed the gap your spec identified.
-
-> ### ✅ Check yourself
-> Fill the blank — to turn the test green you edited the **\_\_\_\_** (the app /
-> the eval), because the spec is right and the product hasn't caught up to it yet.
->
-> <details><summary>answer</summary>
->
-> the **app** (`app/agent.py`). You change the product to meet the test — not the
-> test to fit the product. (Loosening the eval to pass is the trap.)
-> </details>
 
 ---
 
