@@ -66,30 +66,11 @@ Those gaps are your target.
 ## Move 1 · Scope the spec with `/pm-critic` · 5 min
 
 Before writing any test, *you* decide what Untangle should do and who stays in
-control. `/pm-critic` writes the spec — but only as well as you brief it. **Don't
-paste a finished description: fill the blanks in your own words first.** That
-thinking *is* the PM work; the skill just turns it into the artifact.
+control. `/pm-critic` writes the spec from your brief. Below is a strong,
+filled-in brief — **send it as-is, or adapt the answers to your own thinking**
+(that thinking *is* the PM work).
 
-In Claude Code, type `/pm-critic`, then complete this and send it:
-
-```text
-/pm-critic
-Scope Untangle and write the AI Canvas + a one-pager. Here's my thinking —
-push back where it's weak:
-
-• What Untangle produces from a letter: _______________________________________
-• The ONE thing that makes its answer "good" (something you could check): ______
-• Who stays in control of the real decision — the person, or the app? _________
-• The worst thing a wrong answer could cause: _________________________________
-```
-
-**How to fill each blank** — one line each, think don't copy:
-- **What it produces** — not "an AI assistant." Name the actual output it hands the user.
-- **The one "good" test** — resist listing three. Pick the *single* thing that, if true, means it worked — and that you could check on a fixed set of letters.
-- **Who's in control** — does Untangle *decide for* the person, or *help them* decide and act? (It's high-stakes — that should point you one way.)
-- **Worst wrong answer** — picture someone acting on a bad output. What's the damage?
-
-**Stuck? Here's one strong fill** — make it your own:
+In Claude Code, type `/pm-critic` and send this:
 
 ```text
 /pm-critic
@@ -108,6 +89,11 @@ push back where it's weak:
 • The worst thing a wrong answer could cause: it drops or misstates the deadline,
   so the person misses a hearing or loses benefits.
 ```
+
+**What each answer is doing** (so you can adapt it): names a concrete output (a
+*brief*), one checkable metric (the deadline — both "surface it" and "don't
+invent it"), the augment call (the person decides), and an asymmetric harm (a
+dropped deadline ≫ over-cautioning).
 
 `/pm-critic` turns your answers into **`product/ai-canvas.md`** + **`product/one-pager.md`**
 and flags anything thin. Open them and read the prediction, the one success
