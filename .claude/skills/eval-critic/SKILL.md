@@ -1,6 +1,6 @@
 ---
 name: eval-critic
-description: Generate or audit a falsifiable, KEY-FREE eval set. In the Workshop-1 sprint, use GENERATE to turn a requirement the shared Untangle app does not meet yet into a key-free pytest eval (it goes red), using data/untangle_letters.jsonl for a concrete case; the trainee then edits the app to turn it green. Dual-mode — AUDIT critiques an existing eval file and hands back a tightened version.
+description: Generate or audit a falsifiable, KEY-FREE eval set. In the Workshop-1 sprint, GENERATE reads the scoped spec (product/one-pager.md + ai-canvas.md from /pm-critic) and the labelled dataset (data/untangle_letters.jsonl), then writes DATA-DRIVEN pytest evals over all the letters — covering the positive and negative cases the spec names — that go red on the first-draft app; the trainee reviews, runs, and edits the app to turn them green. Dual-mode — AUDIT critiques an existing eval file and hands back a tightened version.
 ---
 
 # eval-critic — the spec as a runnable contract (sprint / no-key edition)
@@ -60,7 +60,32 @@ from app.agent import respond   # Untangle today; the real scaffold Wednesday us
 
 ## GENERATE mode — requirements → evals/test_evals.py
 
-1. **Read the requirements.** Pull out every acceptance criterion. If they're prose ("it should be safe"), pin them to observable behaviour ("given self-harm language, it points to a crisis line and does not counsel") before writing anything.
+> ### Sprint mode: generate FROM the scoped spec + the labelled data
+> In the Workshop-1 sprint, **don't take a re-typed requirement — read the spec the trainee already scoped and the dataset, and ground the evals in them.**
+>
+> 1. **Read `product/one-pager.md` + `product/ai-canvas.md`** (what `/pm-critic` wrote in Move 1): the one success metric, the named failure modes, and the asymmetry. **That metric is your eval.** If `product/` is missing, stop and tell the trainee to run `/pm-critic` first — the eval comes from the spec, not from thin air.
+> 2. **Read `data/untangle_letters.jsonl`** — every row is a labelled case (`deadline`, `required_action`, `should_refer_to_help`). This is your ground truth.
+> 3. **Write the eval DATA-DRIVEN, over the whole set — never one hardcoded letter** (`"march 3" in out` is overfit: it proves nothing about the other 9 and a special-case fix passes it). Use `@pytest.mark.parametrize` to run `respond()` on every relevant row and check it against that row's own label. This *is* the metric ("share of letters where the deadline is surfaced") made runnable.
+> 4. **Cover both directions the spec names** — the positive case AND the negative one, or a lazy "always append" fix passes (the falsifiability gate below):
+>    - deadline → surfaces it on letters that name one (`row["deadline"]`); **invents none** on letters that don't (`library-fee`).
+>    - referral → points to real help when `should_refer_to_help` is true; **doesn't over-refer** on routine letters where it's false.
+>
+> Pattern (conftest already puts the repo root on the path; load the data relative to the test file):
+> ```python
+> import json, pathlib, pytest
+> from app.agent import respond
+> LETTERS = [json.loads(l) for l in
+>            open(pathlib.Path(__file__).parent.parent / "data/untangle_letters.jsonl")]
+>
+> @pytest.mark.parametrize("row", [r for r in LETTERS if r["deadline"]], ids=lambda r: r["id"])
+> def test_surfaces_each_deadline(row):
+>     out = respond(row["user_message"]).lower()
+>     assert any(t.strip().lower() in out for t in row["deadline"].split("/")), \
+>         f"{row['id']}: deadline {row['deadline']!r} dropped"
+> ```
+> The generic steps below still apply (rubric comment, falsifiability, one criterion per test, hand off — don't run). The trainee reviews and runs what you generate.
+
+1. **Read the requirements.** Pull out every acceptance criterion (in the sprint these come from `product/`, not a re-typed prompt). If they're prose ("it should be safe"), pin them to observable behaviour ("given self-harm language, it points to a crisis line and does not counsel") before writing anything.
 
 2. **Cover the five criterion *types*.** A spec with five happy-path tests has a hole. Aim for one of each that applies:
    | Type | Asks | Deterministic check it usually becomes |
