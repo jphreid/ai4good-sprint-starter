@@ -1,0 +1,1305 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Product Management for AI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0C0D12; --card:#16171F; --card2:#1C1E28; --ink:#F3F4F8; --muted:#9498A8; --line:#262833;
+    --mint:#3CE6B0; --violet:#8B7CFF; --pink:#FF7EB6; --blue:#58A6FF; --amber:#FFC24B;
+    --disp:"Space Grotesk",system-ui,sans-serif; --sans:"Inter",system-ui,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{background:#000;display:flex;align-items:center;justify-content:center;font-family:var(--sans);overflow:hidden}
+  .stage{position:relative;aspect-ratio:16/9;width:min(100vw,177.78vh);height:min(56.25vw,100vh);
+    background:radial-gradient(120% 120% at 80% -10%,#1a1530 0%,var(--bg) 55%);
+    color:var(--ink);container-type:size;overflow:hidden;border-radius:.6cqw}
+  .slide{position:absolute;inset:0;padding:6cqh 5cqw;display:none;flex-direction:column}
+  .slide.active{display:grid;animation:rise .45s cubic-bezier(.2,.7,.2,1)}
+  @keyframes rise{from{opacity:0;transform:translateY(1.5cqh)}to{opacity:1;transform:none}}
+  .eyebrow{font-family:var(--disp);font-weight:600;font-size:1.4cqw;letter-spacing:.3em;text-transform:uppercase;color:var(--mint)}
+  h1{font-family:var(--disp);font-weight:700;font-size:7.4cqw;line-height:.97;letter-spacing:-.02em}
+  h1 em{font-style:normal;color:var(--mint)}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:2.2cqw;padding:4cqh 3cqw;
+    display:flex;flex-direction:column;justify-content:space-between;overflow:hidden;position:relative}
+  .card .lbl{font-family:var(--disp);font-size:1.3cqw;letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
+
+  /* ── SLIDE 1 · title bento ── */
+  .s1{grid-template-columns:1.45fr 1fr;grid-template-rows:1fr 1fr;gap:2.2cqw}
+  .s1 .hero{grid-row:1 / span 2;justify-content:flex-end;
+    background:radial-gradient(90% 80% at 18% 8%,rgba(139,124,255,.35),transparent 60%),var(--card)}
+  .s1 .hero h1{margin-top:1.5cqh}
+  .s1 .hero .lede{font-size:2.1cqw;color:var(--muted);margin-top:2.6cqh;line-height:1.4;max-width:34cqw}
+  .s1 .when{justify-content:center;align-items:flex-start;background:linear-gradient(135deg,var(--violet),#5B45E0);border:none}
+  .s1 .when .big{font-family:var(--disp);font-weight:700;font-size:4.4cqw;color:#fff;line-height:1}
+  .s1 .when .sm{color:rgba(255,255,255,.88);font-size:1.7cqw;margin-top:1cqh}
+  .s1 .who{justify-content:flex-end}
+  .s1 .who .nm{font-family:var(--disp);font-weight:600;font-size:2.8cqw}
+  .s1 .who .rl{color:var(--muted);font-size:1.7cqw;margin-top:.6cqh}
+
+  /* ── SLIDE 2 · about me — 4 boxes + artifact strip ── */
+  .s2{grid-template-columns:1fr 1fr;grid-template-rows:auto 1fr 1fr auto;gap:1.8cqw}
+  .s2 .head{grid-column:1 / -1;display:flex;align-items:flex-end}
+  .s2 .head .eyebrow{font-size:1.5cqw}
+  .s2 .box{padding:2.8cqh 2.6cqw;flex-direction:row;justify-content:flex-start;align-items:flex-start;gap:1.6cqw}
+  .s2 .box > div, .s2 .callout > div{flex:1}
+  .s2 .box .dot{flex:none;width:1.5cqw;height:1.5cqw;border-radius:50%;background:var(--mint);margin-top:.9cqh}
+  .s2 .box:nth-child(3) .dot{background:var(--violet)}
+  .s2 .box:nth-child(4) .dot{background:var(--amber)}
+  .s2 .box:nth-child(5) .dot{background:#FF7EB6}
+  .s2 .box h3{font-family:var(--disp);font-weight:600;font-size:2.4cqw;line-height:1.05}
+  .s2 .box p{color:var(--muted);font-size:1.6cqw;margin-top:.6cqh;line-height:1.35}
+  .s2 .callout{grid-column:1 / -1;flex-direction:row;justify-content:flex-start;align-items:center;gap:2.4cqw;padding:3cqh 3cqw;
+    background:linear-gradient(120deg,rgba(60,230,176,.18),rgba(139,124,255,.18)),var(--card);border-color:rgba(60,230,176,.45)}
+  .s2 .callout .arr{font-family:var(--disp);font-weight:700;font-size:3.4cqw;color:var(--mint);line-height:1}
+  .s2 .callout h3{font-family:var(--disp);font-weight:600;font-size:2.3cqw;color:var(--mint);line-height:1.1}
+  .s2 .callout p{color:var(--ink);font-size:1.7cqw;margin-top:.6cqh;line-height:1.35}
+
+  /* ── SLIDE 3 · divider ── */
+  .divider{place-content:center;text-align:center;gap:0}
+  .divider .eyebrow{margin-bottom:3.5cqh}
+  .divider h1{font-size:11cqw}
+  .divider .rule{width:14cqw;height:.5cqh;background:var(--mint);border-radius:99px;margin:4cqh auto 0;box-shadow:0 0 3cqw var(--mint)}
+  /* framed quote — any divider slide (3, 6, …) */
+  .deadend h1, .disc h1{font-size:8.4cqw}
+  .divider blockquote{justify-self:center;max-width:62cqw;margin-top:4.5cqh;padding:3.6cqh 3.4cqw;text-align:left;
+    border-left:.6cqw solid var(--mint);border-radius:1.4cqw;
+    background:linear-gradient(120deg,rgba(60,230,176,.12),transparent),var(--card);
+    font-family:var(--disp);font-weight:600;font-size:2.9cqw;line-height:1.28;color:var(--ink)}
+  .divider blockquote em{color:var(--mint);font-style:normal}
+  .deadend .qgrid{justify-self:center;width:76cqw;margin-top:2.4cqh;display:grid;grid-template-columns:repeat(4,1fr);gap:1.1cqw}
+  .deadend .qgrid span{display:grid;place-items:center;min-height:8.5cqh;padding:1.4cqh 1cqw;border:1px solid rgba(60,230,176,.35);border-radius:1.2cqw;background:rgba(60,230,176,.08);font-family:var(--disp);font-weight:700;font-size:1.55cqw;line-height:1.15;color:var(--mint)}
+  .deadend .qgrid .bad{grid-template-columns:auto 1fr;gap:.8cqw;border-color:rgba(255,126,182,.42);background:rgba(255,126,182,.1);color:var(--pink)}
+  .deadend .qgrid .bad b{font-size:2.2cqw;color:var(--pink)}
+  .disc .notai{justify-self:center;margin-top:2.4cqh;font-family:var(--disp);font-weight:600;font-size:2.1cqw;line-height:1.3;color:var(--muted)}
+
+  /* ── SLIDE 4 · the mistake ── */
+  .s4{grid-template-columns:1fr 1fr;grid-template-rows:auto 1fr auto auto;gap:1.8cqw}
+  .s4 .punch{grid-column:1 / -1;font-family:var(--disp);font-weight:600;font-size:2.2cqw;color:var(--muted);padding-top:.4cqh}
+  .s4 .punch em{color:var(--mint);font-style:normal}
+  .s4 .head{grid-column:1 / -1}
+  .s4 .head h1{font-size:5.4cqw;margin-top:.8cqh}
+  .s4 .head h1 em{font-style:normal;color:var(--mint)}
+  .s4 .box{justify-content:flex-start;gap:1.6cqh}
+  .s4 .box h3{font-family:var(--disp);font-weight:600;font-size:2.5cqw;line-height:1.05}
+  .s4 .box p{color:var(--muted);font-size:1.8cqw;margin-top:.6cqh;line-height:1.35}
+  .s4 .cost{grid-column:1 / -1;flex-direction:row;justify-content:flex-start;align-items:center;gap:3cqw;padding:3cqh 3.4cqw;
+    background:linear-gradient(120deg,rgba(255,194,75,.16),transparent),var(--card);border-color:rgba(255,194,75,.5)}
+  .s4 .cost .big{flex:none;font-family:var(--disp);font-weight:700;font-size:4.4cqw;color:var(--amber);line-height:1}
+  .s4 .cost p{flex:1;color:var(--ink);font-size:1.95cqw;line-height:1.35}
+
+  /* shared: content-slide head */
+  .head .eyebrow{display:block;margin-bottom:1.2cqh}
+
+  /* ── SLIDE 5 · agenda ── */
+  .s5{grid-template-columns:1fr;grid-template-rows:auto 1fr auto;gap:2cqh}
+  .s5 .head h1{font-size:5.6cqw}
+  .s5 .head h1 em{font-style:normal;color:var(--mint)}
+  .s5 .rows{display:flex;flex-direction:column;gap:1.3cqh;justify-content:center}
+  .s5 .row{display:flex;align-items:center;gap:2.2cqw;background:var(--card);border:1px solid var(--line);border-radius:1.4cqw;padding:2cqh 2.6cqw}
+  .s5 .row .n{flex:none;width:3.6cqw;height:3.6cqw;border-radius:.9cqw;display:grid;place-items:center;font-family:var(--disp);font-weight:700;font-size:1.9cqw;background:#20222c;color:var(--ink)}
+  .s5 .row .name{flex:1;font-family:var(--disp);font-weight:600;font-size:2.3cqw}
+  .s5 .row .name small{font-family:var(--sans);font-weight:400;font-size:1.5cqw;color:var(--muted)}
+  .s5 .row .time{flex:none;font-family:var(--disp);font-size:1.7cqw;color:var(--muted)}
+  .s5 .row.hot{border-color:var(--mint);background:linear-gradient(120deg,rgba(60,230,176,.14),transparent),var(--card)}
+  .s5 .row.hot .n{background:var(--mint);color:#0C0D12}
+  .s5 .row.hot .time{color:var(--mint)}
+  .s5 .flow{font-family:var(--disp);font-weight:600;font-size:1.9cqw;color:var(--muted);text-align:center}
+  .s5 .flow b{color:var(--mint)}
+
+  /* ── REVIEW BOARD TIMING ── */
+  .skills-timing{grid-template-columns:1fr 1fr;grid-template-rows:auto 1fr auto;gap:1.8cqw}
+  .skills-timing .head{grid-column:1 / -1}
+  .skills-timing .head h1{font-size:4.8cqw}
+  .skills-timing .head h1 em{font-style:normal;color:var(--mint)}
+  .skills-timing .wcard{justify-content:flex-start;gap:1.5cqh}
+  .skills-timing .wlabel{font-family:var(--disp);font-weight:600;font-size:1.35cqw;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+  .skills-timing .row{display:flex;align-items:flex-start;gap:1.2cqw}
+  .skills-timing .row .dot{flex:none;width:1.1cqw;height:1.1cqw;border-radius:50%;margin-top:.75cqh}
+  .skills-timing .row .nm{font-family:var(--disp);font-weight:700;font-size:2.1cqw;line-height:1.05}
+  .skills-timing .row .when{display:block;font-family:var(--sans);font-size:1.4cqw;color:var(--muted);margin-top:.2cqh}
+  .skills-timing .pm  .dot{background:var(--mint)}   .skills-timing .pm  .nm{color:var(--mint)}
+  .skills-timing .des .dot{background:var(--violet)} .skills-timing .des .nm{color:var(--violet)}
+  .skills-timing .ev  .dot{background:var(--pink)}   .skills-timing .ev  .nm{color:var(--pink)}
+  .skills-timing .en  .dot{background:var(--blue)}   .skills-timing .en  .nm{color:var(--blue)}
+  .skills-timing .sa  .dot{background:var(--amber)}  .skills-timing .sa  .nm{color:var(--amber)}
+  .skills-timing .bottom{grid-column:1 / -1;flex-direction:row;justify-content:flex-start;align-items:center;gap:2cqw;padding:2.6cqh 3cqw;border-color:rgba(60,230,176,.4);background:linear-gradient(120deg,rgba(60,230,176,.14),transparent),var(--card)}
+  .skills-timing .bottom .arr{font-family:var(--disp);font-weight:700;font-size:2.6cqw;color:var(--mint)}
+  .skills-timing .bottom h3{font-family:var(--disp);font-weight:600;font-size:2.2cqw;color:var(--mint)}
+  /* skill callout (moment-of-use) — lead style, coloured by stage */
+  .skill-callout{place-content:center;text-align:center;gap:0}
+  .skill-callout .eyebrow{margin-bottom:2.4cqh}
+  .skill-callout .sk{font-family:var(--disp);font-weight:700;font-size:7cqw;line-height:1}
+  .skill-callout .line{font-family:var(--disp);font-weight:600;font-size:2.7cqw;color:var(--ink);margin-top:3.2cqh;max-width:62cqw;justify-self:center;line-height:1.3}
+  .skill-callout .line em{font-style:normal;color:var(--muted);font-size:2cqw}
+  .skill-callout .chips{display:flex;gap:.8cqw;justify-content:center;align-items:center;margin-top:2.4cqh;flex-wrap:wrap}
+  .skill-callout .chip{border:1px solid rgba(139,124,255,.45);border-radius:999px;padding:1cqh 1.2cqw;font-family:var(--disp);font-weight:600;font-size:1.35cqw;color:var(--violet);background:rgba(139,124,255,.08)}
+  .skill-callout .timing{margin-top:2.2cqh;font-family:var(--disp);font-weight:600;font-size:2cqw;color:var(--muted)}
+  .skill-callout .timing b{color:var(--violet)}
+  .skill-callout.scope .timing b{color:var(--mint)}
+  .skill-callout.scope .chip{border-color:rgba(60,230,176,.45);color:var(--mint);background:rgba(60,230,176,.08)}
+  .skill-callout.scope .eyebrow,.skill-callout.scope .sk{color:var(--mint)}
+  .skill-callout.shape .eyebrow,.skill-callout.shape .sk{color:var(--violet)}
+
+  /* ── SLIDE 7 · wrong vs right ── */
+  .s7{grid-template-columns:1fr;grid-template-rows:auto 1fr 1fr auto;gap:1.7cqw}
+  .s7 .head h1{font-size:5cqw}
+  .s7 .head h1 em{font-style:normal;color:var(--mint)}
+  .s7 .qc{justify-content:center;gap:1.3cqh}
+  .s7 .qc .lbl{font-family:var(--disp);font-size:1.3cqw;letter-spacing:.18em;text-transform:uppercase}
+  .s7 .qc .q{font-family:var(--disp);font-weight:600;font-size:2.6cqw;line-height:1.16}
+  .s7 .qc.wrong{border-color:#33363f}
+  .s7 .qc.wrong .lbl{color:var(--muted)} .s7 .qc.wrong .q{color:#6b6f7e}
+  .s7 .qc.right{border-color:rgba(60,230,176,.5);background:linear-gradient(120deg,rgba(60,230,176,.1),transparent),var(--card)}
+  .s7 .qc.right .lbl{color:var(--mint)} .s7 .qc.right .q em{color:var(--mint);font-style:normal}
+  .s7 .qc.right{position:relative;padding-right:10cqw}
+  .s7 .qc.right .app-badge{position:absolute;right:2.4cqw;bottom:2.2cqh;width:6.2cqw;height:6.2cqw;object-fit:contain;filter:drop-shadow(0 .7cqw 1.4cqw rgba(0,0,0,.35))}
+  .s7 .foot{display:flex;justify-content:space-between;align-items:baseline}
+  .s7 .foot .ln{font-family:var(--disp);font-weight:600;font-size:1.9cqw;color:var(--ink)}
+  .s7 .foot .cite{font-size:1.3cqw;color:var(--muted)}
+
+  /* ── SLIDES 8 & 9 · AI Canvas (2×2) ── */
+  .canvas{grid-template-columns:1fr 1fr;gap:1.8cqw}
+  .s8{grid-template-rows:auto 1fr 1fr auto}
+  .s9{grid-template-rows:auto 1fr 1fr}
+  .canvas .head{grid-column:1 / -1}
+  .canvas .head h1{font-size:5cqw}
+  .canvas .head .q{font-family:var(--disp);font-weight:500;font-size:2.1cqw;color:var(--muted);font-style:italic;margin-top:.6cqh}
+  .canvas .box{justify-content:flex-start;gap:1.1cqh}
+  .canvas .box .k{font-family:var(--disp);font-weight:700;font-size:2.3cqw}
+  .canvas .box:nth-child(2) .k{color:var(--mint)}
+  .canvas .box:nth-child(3) .k{color:var(--violet)}
+  .canvas .box:nth-child(4) .k{color:var(--amber)}
+  .canvas .box:nth-child(5) .k{color:var(--pink)}
+  .canvas .box p{color:var(--muted);font-size:1.8cqw;line-height:1.35}
+  .canvas .data{grid-column:1 / -1;font-family:var(--disp);font-size:1.7cqw;color:var(--muted);text-align:center}
+  .canvas .data b{color:var(--ink)}
+  .canvas .data.has-badge{display:flex;align-items:center;justify-content:center;gap:1.6cqw}
+  .canvas .data .app-badge{width:5.4cqw;height:5.4cqw;object-fit:contain;filter:drop-shadow(0 .7cqw 1.4cqw rgba(0,0,0,.35))}
+
+  /* ── SLIDE 10 · augment vs automate ── */
+  .s10{grid-template-columns:1fr 1fr;grid-template-rows:auto 1fr auto;gap:1.8cqw}
+  .s10 .head{grid-column:1 / -1}
+  .s10 .head h1{font-size:5cqw}
+  .s10 .head .sub{color:var(--muted);font-size:1.9cqw;margin-top:.4cqh}
+  .s10 .col{justify-content:flex-start;gap:1.4cqh}
+  .s10 .col .k{font-family:var(--disp);font-weight:700;font-size:2.8cqw}
+  .s10 .col p{color:var(--muted);font-size:1.85cqw;line-height:1.35}
+  .s10 .col .warnline{color:var(--amber)}
+  .s10 .col.aug{border-color:rgba(139,124,255,.5);background:linear-gradient(135deg,rgba(139,124,255,.12),transparent),var(--card)}
+  .s10 .col.aug .k{color:var(--mint)}
+  .s10 .foot{grid-column:1 / -1;display:flex;justify-content:space-between;align-items:baseline}
+  .s10 .foot .ln{font-family:var(--disp);font-weight:600;font-size:2cqw;color:var(--mint)}
+  .s10 .foot .cite{font-size:1.3cqw;color:var(--muted)}
+
+  /* ── SLIDE 11 · augment not automate (SymptomScout) ── */
+  .s11{grid-template-columns:1fr;grid-template-rows:auto auto 1fr auto;gap:1.6cqh}
+  .s11 .head h1{font-size:5.4cqw}
+  .s11 .head h1 em{font-style:normal;color:var(--violet)}
+  .s11 .lead2{font-family:var(--disp);font-weight:600;font-size:2.7cqw;color:var(--ink);line-height:1.2}
+  .s11 .lead2 b{color:var(--mint)}
+  .s11 .reasons{display:grid;grid-template-columns:repeat(3,1fr);gap:1.6cqw}
+  .s11 .reasons .card{justify-content:center;padding:2.6cqh 2.2cqw}
+  .s11 .reasons b{display:block;font-family:var(--disp);color:var(--mint);font-weight:700;font-size:1.9cqw;margin-bottom:.8cqh}
+  .s11 .reasons .card:nth-child(2) b{color:var(--violet)}
+  .s11 .reasons .card:nth-child(3) b{color:var(--amber)}
+  .s11 .reasons p{color:var(--muted);font-size:1.7cqw;line-height:1.3}
+  .s11 .punchstrip{flex-direction:row;justify-content:flex-start;align-items:center;gap:2cqw;padding:3cqh 3cqw;
+    background:linear-gradient(120deg,rgba(60,230,176,.18),transparent),var(--card);border-color:rgba(60,230,176,.45)}
+  .s11 .punchstrip .arr{font-family:var(--disp);font-weight:700;font-size:2.8cqw;color:var(--mint)}
+  .s11 .punchstrip h3{font-family:var(--disp);font-weight:600;font-size:2.8cqw;color:var(--mint)}
+  .s11 .punchstrip .app-badge{width:6.2cqw;height:6.2cqw;object-fit:contain;flex:none;margin-left:auto;filter:drop-shadow(0 .7cqw 1.4cqw rgba(0,0,0,.35))}
+
+  /* ── STAGE 2 · UX-first accent ── */
+  .stage2 .eyebrow, .stage2 h1 em{color:var(--violet)}
+  .stage2 .accent-violet{color:var(--violet)}
+  .stage2 .col.aug .k.accent-violet, .stage2 .lead2 b.accent-violet, .stage2 .reasons b.accent-violet, .stage2 .foot .ln.accent-violet{color:var(--violet)}
+  .stage2 .accent-card{border-color:rgba(139,124,255,.5);background:linear-gradient(135deg,rgba(139,124,255,.12),transparent),var(--card)}
+  .stage2 .accent-strip{border-color:rgba(139,124,255,.48);background:linear-gradient(120deg,rgba(139,124,255,.2),transparent),var(--card)}
+  .stage2 .accent-strip .arr, .stage2 .accent-strip h3, .stage2 .accent-strip b{color:var(--violet)}
+  .stage2-divider .eyebrow{color:var(--violet)}
+  .stage2-divider .rule{background:var(--violet);box-shadow:0 0 3cqw var(--violet)}
+  .stage2-divider .tag{font-family:var(--disp);font-weight:600;font-size:2.5cqw;color:var(--muted);margin-top:2cqh}
+  .stage2-divider .thesis{max-width:62cqw;margin-top:3cqh;font-size:2.1cqw;line-height:1.3;color:var(--muted)}
+  .stage2-divider .thesis b{color:var(--violet)}
+  /* Steve Jobs quote = the stage hero (violet framed quote, larger than a standard divider quote) */
+  .stage2-divider blockquote{border-left-color:var(--violet);max-width:82cqw;margin-top:1cqh;font-size:3.05cqw;line-height:1.24;
+    background:linear-gradient(120deg,rgba(139,124,255,.12),transparent),var(--card)}
+  .stage2-divider blockquote em{color:var(--violet)}
+  .stage2-divider blockquote .quote-line{display:block;white-space:nowrap}
+  .stage2-divider blockquote cite{display:block;font-style:normal;font-family:var(--disp);font-weight:600;font-size:1.8cqw;color:var(--muted);margin-top:1.8cqh}
+  .ux-contrast{grid-template-columns:1fr 1fr;grid-template-rows:auto 1fr auto;gap:1.8cqw}
+  .ux-contrast .head{grid-column:1 / -1}
+  .ux-contrast .head h1{font-size:5.2cqw}
+  .ux-contrast .box{justify-content:flex-start;gap:1.2cqh}
+  .ux-contrast .box .k{font-family:var(--disp);font-weight:700;font-size:2.4cqw}
+  .ux-contrast .box p{color:var(--muted);font-size:1.85cqw;line-height:1.35}
+  .ux-contrast .box.ai{border-color:rgba(139,124,255,.5);background:linear-gradient(135deg,rgba(139,124,255,.12),transparent),var(--card)}
+  .ux-contrast .box.ai .k{color:var(--violet)}
+  .ux-contrast .box.trad .k{color:var(--muted)}
+  .ux-contrast .bottom{grid-column:1 / -1;flex-direction:row;justify-content:flex-start;align-items:center;gap:2cqw;padding:3cqh 3cqw}
+  .ux-contrast .bottom .arr{font-family:var(--disp);font-weight:700;font-size:3cqw;color:var(--violet)}
+  .ux-contrast .bottom h3{font-family:var(--disp);font-weight:600;font-size:2.5cqw;color:var(--violet)}
+  .ux-moves{grid-template-columns:1fr 1fr;grid-template-rows:auto 1fr auto;gap:1.8cqw}
+  .ux-moves .head{grid-column:1 / -1}
+  .ux-moves .head h1{font-size:5.2cqw}
+  .ux-moves .head sup{font-size:.38em;vertical-align:super;color:var(--muted);margin-left:.25cqw}
+  .ux-moves .move{justify-content:flex-start;gap:1.4cqh;align-self:start;min-height:47cqh}
+  .ux-moves .move .n{width:4cqw;height:4cqw;border-radius:1cqw;display:grid;place-items:center;background:var(--violet);color:#0C0D12;font-family:var(--disp);font-weight:700;font-size:2cqw}
+  .ux-moves .move:nth-child(2) .n{background:var(--mint)}
+  .ux-moves .move h3{font-family:var(--disp);font-weight:700;font-size:2.8cqw}
+  .ux-moves .move p{color:var(--muted);font-size:1.9cqw;line-height:1.35}
+  .ux-moves .foot{grid-column:1 / -1;text-align:center;font-size:1.4cqw;color:var(--muted)}
+  .ux-moves .note{grid-column:1 / -1;justify-self:end;align-self:end;text-align:right;font-size:1.25cqw;color:var(--muted);padding-right:.4cqw}
+  .ux-uncertainty{grid-template-columns:1fr 1fr;grid-template-rows:auto 1fr auto;gap:1.8cqw}
+  .ux-uncertainty .head{grid-column:1 / -1}
+  .ux-uncertainty .head h1{font-size:5.2cqw}
+  .ux-uncertainty .head .sub{font-family:var(--disp);font-size:2cqw;color:var(--muted);margin-top:.6cqh}
+  .ux-uncertainty .bad{border-color:rgba(255,126,182,.32)}
+  .ux-uncertainty .bad .k{color:var(--pink)}
+  .ux-uncertainty .good{border-color:rgba(139,124,255,.5);background:linear-gradient(135deg,rgba(139,124,255,.12),transparent),var(--card)}
+  .ux-uncertainty .good .k{color:var(--violet)}
+  .ux-uncertainty .box{justify-content:flex-start;gap:2.2cqh;padding:3.2cqh 3cqw}
+  .ux-uncertainty .chunk{display:flex;flex-direction:column;gap:.7cqh}
+  .ux-uncertainty .box .k{font-family:var(--disp);font-weight:700;font-size:1.45cqw;letter-spacing:.16em;text-transform:uppercase}
+  .ux-uncertainty .box p{font-size:2.05cqw;line-height:1.3;color:var(--muted)}
+  .ux-uncertainty .good p.evidence{color:var(--ink);font-weight:600}
+  .ux-uncertainty .bottom{grid-column:1 / -1;text-align:center;font-family:var(--disp);font-weight:600;font-size:2.25cqw;color:var(--muted)}
+  .ux-uncertainty .bottom b{color:var(--violet)}
+  .ux-uncertainty .bottom .badword{color:var(--pink)}
+  .degrade{grid-template-columns:repeat(3,1fr);grid-template-rows:auto 1fr auto;gap:1.8cqw}
+  .degrade .head{grid-column:1 / -1}
+  .degrade .head h1{font-size:5.2cqw}
+  .degrade .head .sub{font-family:var(--disp);font-size:2cqw;color:var(--muted);margin-top:.6cqh}
+  .degrade .box{justify-content:flex-start;gap:1.2cqh;padding:3.2cqh 2.4cqw}
+  .degrade .box .k{font-family:var(--disp);font-weight:700;font-size:1.45cqw;letter-spacing:.16em;text-transform:uppercase}
+  .degrade .box:nth-child(2) .k{color:var(--mint)}
+  .degrade .box:nth-child(3) .k{color:var(--violet)}
+  .degrade .box:nth-child(4) .k{color:var(--amber)}
+  .degrade .box p{color:var(--muted);font-size:1.9cqw;line-height:1.3}
+  .degrade .never{grid-column:1 / -1;border-color:rgba(255,194,75,.55);background:linear-gradient(120deg,rgba(255,194,75,.16),transparent),var(--card);padding:3cqh 3cqw;text-align:center;font-family:var(--disp);font-weight:700;font-size:2.6cqw;color:var(--amber)}
+  .wrong-review{grid-template-columns:1fr;grid-template-rows:auto auto auto;gap:2.6cqh;align-content:center}
+  .wrong-review .head h1{font-size:5.2cqw}
+  .wrong-review .head .sub{font-family:var(--disp);font-weight:600;font-size:2cqw;line-height:1.25;color:var(--muted);margin-top:1cqh;max-width:62cqw}
+  .wrong-review .questions{display:grid;grid-template-columns:1fr 1fr;gap:2.2cqw}
+  .wrong-review .qcard{border-color:rgba(139,124,255,.5);background:linear-gradient(135deg,rgba(139,124,255,.12),transparent),var(--card);padding:4.2cqh 3.6cqw;gap:1.4cqh;min-height:25cqh}
+  .wrong-review .qcard b{font-family:var(--disp);font-weight:800;font-size:1.55cqw;letter-spacing:.16em;color:var(--violet)}
+  .wrong-review .qcard span{font-family:var(--disp);font-weight:700;font-size:2.35cqw;line-height:1.16;color:var(--ink);max-width:28cqw}
+  .wrong-review .bottom{border:1px solid rgba(255,194,75,.55);border-radius:1.6cqw;background:linear-gradient(120deg,rgba(255,194,75,.16),transparent),var(--card);padding:2cqh 3cqw;font-family:var(--disp);font-weight:700;font-size:2.2cqw;color:var(--amber);text-align:center}
+
+  /* ── SLIDE 10 · AI fit checklist ── */
+  .s12{grid-template-columns:repeat(3,1fr);grid-template-rows:auto 1fr auto auto;gap:1.8cqw}
+  .s12 .head{grid-column:1 / -1}
+  .s12 .head h1{font-size:5.4cqw}
+  .s12 .q{justify-content:flex-start;gap:1.6cqh}
+  .s12 .q .n{flex:none;width:4cqw;height:4cqw;border-radius:1cqw;display:grid;place-items:center;font-family:var(--disp);font-weight:700;font-size:2cqw;color:#0C0D12}
+  .s12 .q:nth-child(2) .n{background:var(--mint)}
+  .s12 .q:nth-child(3) .n{background:var(--violet)}
+  .s12 .q:nth-child(4) .n{background:var(--amber)}
+  .s12 .q h3{font-family:var(--disp);font-weight:600;font-size:2.2cqw;line-height:1.12}
+  .s12 .q p{color:var(--muted);font-size:1.6cqw;font-style:italic;margin-top:.7cqh;line-height:1.3}
+  .s12 .q .ex{color:var(--ink);font-size:1.45cqw;font-style:normal;font-weight:600}
+  .s12 .gate{grid-column:1 / -1;flex-direction:row;justify-content:flex-start;align-items:center;gap:2cqw;padding:2.8cqh 3cqw;
+    background:linear-gradient(120deg,rgba(60,230,176,.18),transparent),var(--card);border-color:rgba(60,230,176,.45)}
+  .s12 .gate .arr{font-family:var(--disp);font-weight:700;font-size:2.8cqw;color:var(--mint)}
+  .s12 .gate h3{font-family:var(--disp);font-weight:600;font-size:2.5cqw;color:var(--mint)}
+  .s12 .foot{grid-column:1 / -1;display:flex;justify-content:flex-end;align-items:baseline}
+  .s12 .foot .cite{font-size:1.3cqw;color:var(--muted)}
+
+  /* ── SLIDE 7 · the problem (meet SymptomScout) ── */
+  .sprob{grid-template-columns:repeat(3,1fr);grid-template-rows:auto 1fr auto;gap:1.8cqw}
+  .sprob.value{grid-template-rows:auto .72fr auto auto;gap:1.35cqw}
+  .sprob.value .box{padding:2.5cqh 2.6cqw}
+  .sprob .head{grid-column:1 / -1}
+  .sprob .head h1{font-size:5cqw}
+  .sprob .head h1 em{font-style:normal;color:var(--mint)}
+  .sprob .box{justify-content:flex-start;gap:1.1cqh}
+  .sprob .box .k{font-family:var(--disp);font-weight:700;font-size:2.1cqw}
+  .sprob .box:nth-child(2) .k{color:var(--violet)}
+  .sprob .box:nth-child(3) .k{color:var(--amber)}
+  .sprob .box:nth-child(4) .k{color:#FF7EB6}
+  .sprob .box p{color:var(--muted);font-size:1.7cqw;line-height:1.35}
+  .sprob .resp{grid-column:1 / -1;flex-direction:row;justify-content:flex-start;align-items:center;gap:2cqw;padding:2.8cqh 3cqw;
+    background:linear-gradient(120deg,rgba(60,230,176,.18),transparent),var(--card);border-color:rgba(60,230,176,.45)}
+  .sprob .resp .arr{font-family:var(--disp);font-weight:700;font-size:2.8cqw;color:var(--mint)}
+  .sprob .resp > div{flex:1}
+  .sprob .resp h3{font-family:var(--disp);font-weight:600;font-size:2.4cqw;color:var(--mint)}
+  .sprob .resp p{color:var(--ink);font-size:1.7cqw;margin-top:.5cqh}
+  .sprob .resp b{color:var(--mint)}
+  .sprob .resp .app-badge{width:7.2cqw;height:7.2cqw;object-fit:contain;flex:none;margin-left:auto;filter:drop-shadow(0 .7cqw 1.4cqw rgba(0,0,0,.35))}
+  .sprob .takeaway{grid-column:1 / -1;text-align:center;font-family:var(--disp);font-weight:700;font-size:2cqw;color:var(--muted)}
+  .sprob .takeaway b{color:var(--mint);font-weight:700}
+
+  /* ════════════════════ STAGE ACCENTS (mirror .stage2) ════════════════════ */
+  .stage3 .eyebrow, .stage3 h1 em{color:var(--pink)}
+  .stage4 .eyebrow, .stage4 h1 em{color:var(--blue)}
+  .stage5 .eyebrow, .stage5 h1 em{color:var(--amber)}
+  /* stage dividers + generic divider extras */
+  .stage3-divider .eyebrow{color:var(--pink)} .stage3-divider .rule{background:var(--pink);box-shadow:0 0 3cqw var(--pink)}
+  .stage4-divider .eyebrow{color:var(--blue)} .stage4-divider .rule{background:var(--blue);box-shadow:0 0 3cqw var(--blue)}
+  .stage5-divider .eyebrow{color:var(--amber)} .stage5-divider .rule{background:var(--amber);box-shadow:0 0 3cqw var(--amber)}
+  .divider .tag{font-family:var(--disp);font-weight:600;font-size:2.5cqw;color:var(--muted);margin-top:2.2cqh;max-width:64cqw;justify-self:center;line-height:1.3}
+  .divider .contact{font-family:var(--disp);font-size:1.7cqw;color:var(--muted);margin-top:3cqh}
+  .handoff{grid-template-rows:auto 1fr auto;gap:2cqh}
+  .handoff .head h1{font-size:5.4cqw}
+  .handoff .handoff-grid{display:grid;grid-template-columns:1fr auto 1fr;align-items:stretch;gap:1.6cqw}
+  .handoff .card{gap:1.4cqh;justify-content:flex-start}
+  .handoff .glabel{font-family:var(--disp);font-weight:700;font-size:2cqw;color:var(--mint)}
+  .handoff .next .glabel{color:var(--blue)}
+  .handoff .item{font-family:var(--disp);font-weight:600;font-size:2.1cqw;color:var(--ink)}
+  .handoff .arrow{display:grid;place-items:center;font-family:var(--disp);font-weight:700;font-size:4cqw;color:var(--amber)}
+  .handoff .thesis{font-family:var(--disp);font-weight:700;font-size:2.5cqw;text-align:center;color:var(--ink);border:1px solid rgba(255,194,75,.35);background:rgba(255,194,75,.08);border-radius:1.6cqw;padding:2.2cqh 2cqw}
+  .stage3-divider .eval-def,.stage4-divider .phase-rail{display:flex;gap:1.2cqw;align-items:center;justify-content:center;margin-top:3cqh;font-family:var(--disp);font-weight:600;color:var(--ink)}
+  .stage3-divider .eval-def span{border:1px solid rgba(255,126,182,.35);border-radius:999px;padding:1.1cqh 1.4cqw;background:rgba(255,126,182,.08);font-size:1.6cqw}
+  .stage3-divider .eval-def b{color:var(--pink);font-size:1.7cqw}
+  .stage3-divider .eval-loop{flex-wrap:wrap;max-width:92cqw;gap:.9cqw 1cqw}
+  .stage3-divider .eval-loop span{font-size:1.35cqw;padding:.9cqh 1.2cqw}
+  .stage3-divider .eval-loop span i{display:block;font-style:normal;color:var(--muted);font-size:.95cqw;letter-spacing:.04em}
+  .stage3-divider .eval-loop b{font-size:1.5cqw}
+  .stage3-divider .loop-note{margin-top:1.6cqh;color:var(--muted);font-family:var(--disp);font-size:1.45cqw}
+  .stage4-divider .phase-rail span{border:1px solid rgba(88,166,255,.35);border-radius:999px;padding:1.1cqh 1.4cqw;background:rgba(88,166,255,.08);font-size:1.6cqw}
+  .stage4-divider .phase-rail b{color:var(--blue);font-size:1.7cqw}
+  .stage5-divider .phase-rail{display:flex;gap:1.2cqw;align-items:center;justify-content:center;margin-top:3cqh;font-family:var(--disp);font-weight:600;color:var(--ink)}
+  .stage5-divider .phase-rail span{border:1px solid rgba(255,194,75,.38);border-radius:999px;padding:1.1cqh 1.4cqw;background:rgba(255,194,75,.08);font-size:1.6cqw}
+  .stage5-divider .phase-rail b{color:var(--amber);font-size:1.7cqw}
+
+  /* shared accent strip helper (per-stage colour set on the slide) */
+
+  /* ── 21 · THE PROBLEM WITH PRDs ── */
+  .prd{grid-template-rows:auto auto 1fr auto;gap:1.5cqh}
+  .prd .head h1{font-size:5.2cqw}
+  .prd .quote{justify-self:start;max-width:78cqw;padding:2.2cqh 2.6cqw;border-left:.6cqw solid var(--pink);border-radius:1.4cqw;
+    background:linear-gradient(120deg,rgba(255,126,182,.12),transparent),var(--card);
+    font-family:var(--disp);font-weight:600;font-size:2.35cqw;line-height:1.25;color:var(--ink)}
+  .prd .dialogue{display:grid;grid-template-columns:repeat(3,1fr);gap:1.4cqw}
+  .prd .line{justify-content:flex-start;gap:1cqh;padding:2.2cqh 2cqw}
+  .prd .line .who{font-family:var(--disp);font-weight:700;font-size:1.6cqw;letter-spacing:.04em;color:var(--pink);text-transform:uppercase}
+  .prd .line p{color:var(--muted);font-size:1.55cqw;line-height:1.28}
+  .prd .line p b{display:block;color:var(--ink);font-family:var(--disp);font-size:1.85cqw;margin-bottom:.8cqh}
+  .prd .line em{color:var(--ink);font-style:normal}
+  .prd .strip{flex-direction:row;justify-content:flex-start;align-items:center;gap:2cqw;padding:2.8cqh 3cqw;
+    border-color:rgba(255,126,182,.45);background:linear-gradient(120deg,rgba(255,126,182,.18),transparent),var(--card)}
+  .prd .strip .arr{font-family:var(--disp);font-weight:700;font-size:2.6cqw;color:var(--pink)}
+  .prd .strip h3{font-family:var(--disp);font-weight:600;font-size:2.5cqw;color:var(--pink)}
+
+  /* ── 22 · THE MODERN ARTIFACT: AN EVAL ── */
+  .evalcode{grid-template-rows:auto auto 1fr auto;gap:1.4cqh}
+  .evalcode .head h1{font-size:5.2cqw}
+  .evalcode .lineage{font-family:var(--disp);font-weight:600;font-size:1.8cqw;color:var(--muted)}
+  .evalcode .lineage b{color:var(--pink)}
+  .evalcode .eval-flow{display:flex;gap:.85cqw;align-items:center;justify-content:center;font-family:var(--disp);font-weight:600;color:var(--ink)}
+  .evalcode .eval-flow span{border:1px solid rgba(255,126,182,.35);border-radius:999px;padding:.8cqh 1.15cqw;background:rgba(255,126,182,.08);font-size:1.25cqw}
+  .evalcode .eval-flow b{color:var(--pink);font-size:1.4cqw}
+  .evalcode .dataset{background:#0E0F16;border:1px solid var(--line);border-radius:1.6cqw;padding:2.4cqh 3cqw;
+    font-family:"SF Mono",ui-monospace,Menlo,monospace;font-size:1.5cqw;line-height:1.38;color:var(--ink);
+    white-space:pre-wrap;overflow:hidden}
+  .evalcode .dataset b{color:var(--pink);font-weight:600}
+  .evalcode .dataset i{color:var(--mint);font-style:normal}
+  .evalcode .dataset em{color:var(--amber);font-style:normal}
+  .evalcode .dataset u{color:var(--muted);text-decoration:none}
+  .evalcode .strip{flex-direction:row;justify-content:flex-start;align-items:center;gap:2cqw;padding:2.8cqh 3cqw;
+    border-color:rgba(255,126,182,.45);background:linear-gradient(120deg,rgba(255,126,182,.18),transparent),var(--card)}
+  .evalcode .strip .arr{font-family:var(--disp);font-weight:700;font-size:2.6cqw;color:var(--pink)}
+  .evalcode .strip h3{font-family:var(--disp);font-weight:600;font-size:2.6cqw;color:var(--ink)}
+  .evalcode .strip h3 em{color:var(--pink);font-style:normal}
+  /* slide 27 — eval summary with no strip: spread 3 elements, enlarge the code */
+  .evalcode.wrote{grid-template-rows:auto auto 1fr;gap:3cqh}
+  .evalcode.wrote .eval-flow span{font-size:1.45cqw;padding:1cqh 1.4cqw}
+  .evalcode.wrote .eval-flow b{font-size:1.6cqw}
+  .evalcode.wrote .dataset{font-size:1.7cqw;line-height:1.5;padding:3cqh 4.5cqw;
+    display:flex;flex-direction:column;justify-content:center}
+
+  /* ── 24 · FIVE EVALS (enumerated rows) ── */
+  .fiveevals{grid-template-rows:auto 1fr auto;gap:1.4cqh}
+  .fiveevals .head h1{font-size:4.8cqw}
+  .fiveevals .head .sub{color:var(--muted);font-size:1.85cqw;margin-top:.4cqh}
+  .fiveevals .head .sub em{color:var(--pink);font-style:normal}
+  .fiveevals .rows{display:flex;flex-direction:column;gap:1cqh;justify-content:center}
+  .fiveevals .row{display:flex;align-items:center;gap:2cqw;background:var(--card);border:1px solid var(--line);border-radius:1.4cqw;padding:1.7cqh 2.4cqw}
+  .fiveevals .row .n{flex:none;width:3.2cqw;height:3.2cqw;border-radius:.8cqw;display:grid;place-items:center;font-family:var(--disp);font-weight:700;font-size:1.7cqw;color:#0C0D12}
+  .fiveevals .row:nth-child(1) .n{background:var(--mint)}
+  .fiveevals .row:nth-child(2) .n{background:var(--violet)}
+  .fiveevals .row:nth-child(3) .n{background:var(--amber)}
+  .fiveevals .row:nth-child(4) .n{background:var(--pink)}
+  .fiveevals .row:nth-child(5) .n{background:var(--blue)}
+  .fiveevals .row .lead{flex:none;width:19cqw;font-family:var(--disp);font-weight:700;font-size:2cqw}
+  .fiveevals .row .desc{flex:1;color:var(--muted);font-size:1.7cqw;line-height:1.3}
+  .fiveevals .foot2{text-align:center;font-family:var(--disp);font-weight:600;font-size:2.15cqw;color:var(--muted)}
+  .fiveevals .foot2 em{color:var(--pink);font-style:normal}
+  .evalexample{grid-template-rows:auto auto 1fr auto;gap:1.3cqh}
+  .evalexample .head h1{font-size:4.7cqw}
+  .evalexample .head .sub{color:var(--muted);font-size:1.75cqw;margin-top:.5cqh}
+  .evalexample .contract{display:grid;grid-template-columns:1fr 1fr;gap:1.4cqw}
+  .evalexample .mini{padding:2.1cqh 2.2cqw;border-color:rgba(255,126,182,.35);background:linear-gradient(120deg,rgba(255,126,182,.08),transparent),var(--card)}
+  .evalexample .mini .k{font-family:var(--disp);font-weight:700;font-size:1.35cqw;letter-spacing:.14em;text-transform:uppercase;color:var(--pink)}
+  .evalexample .mini p{font-size:1.55cqw;line-height:1.28;color:var(--ink);margin-top:.6cqh}
+  .evalexample .rows{display:flex;flex-direction:column;gap:.75cqh;justify-content:center}
+  .evalexample .row{display:grid;grid-template-columns:3.2cqw 15cqw 1fr;align-items:center;gap:1.3cqw;background:var(--card);border:1px solid var(--line);border-radius:1.15cqw;padding:1.25cqh 1.8cqw}
+  .evalexample .row .n{width:2.8cqw;height:2.8cqw;border-radius:.7cqw;display:grid;place-items:center;font-family:var(--disp);font-weight:700;font-size:1.45cqw;color:#0C0D12}
+  .evalexample .row:nth-child(1) .n{background:var(--mint)}
+  .evalexample .row:nth-child(2) .n{background:var(--violet)}
+  .evalexample .row:nth-child(3) .n{background:var(--amber)}
+  .evalexample .row:nth-child(4) .n{background:var(--pink)}
+  .evalexample .row:nth-child(5) .n{background:var(--blue)}
+  .evalexample .row .bucket{font-family:var(--disp);font-weight:700;font-size:1.55cqw;color:var(--ink)}
+  .evalexample .row .case{font-size:1.45cqw;line-height:1.25;color:var(--muted)}
+  .evalexample .foot2{text-align:center;font-family:var(--disp);font-weight:600;font-size:1.85cqw;color:var(--muted)}
+  .evalexample .foot2 em{color:var(--pink);font-style:normal}
+
+  /* ── 26 · WHAT YOU JUST SAW ── */
+  .justsaw{grid-template-rows:auto 1fr auto;gap:1.5cqh}
+  .justsaw .head h1{font-size:5.2cqw}
+  .justsaw .rows{display:flex;flex-direction:column;gap:1.2cqh;justify-content:center}
+  .justsaw .row{display:flex;align-items:center;gap:2cqw;background:var(--card);border:1px solid var(--line);border-radius:1.4cqw;padding:2cqh 2.6cqw}
+  .justsaw .row .n{flex:none;width:3.4cqw;height:3.4cqw;border-radius:.9cqw;display:grid;place-items:center;font-family:var(--disp);font-weight:700;font-size:1.8cqw;color:#0C0D12}
+  .justsaw .row:nth-child(1) .n{background:var(--mint)}
+  .justsaw .row:nth-child(2) .n{background:var(--violet)}
+  .justsaw .row:nth-child(3) .n{background:var(--pink)}
+  .justsaw .row p{flex:1;font-family:var(--disp);font-weight:600;font-size:2.1cqw;color:var(--ink)}
+  .justsaw .strip{flex-direction:row;justify-content:flex-start;align-items:center;gap:2cqw;padding:2.4cqh 3cqw;
+    border-color:rgba(255,126,182,.45);background:linear-gradient(120deg,rgba(255,126,182,.18),transparent),var(--card)}
+  .justsaw .strip .arr{font-family:var(--disp);font-weight:700;font-size:2.4cqw;color:var(--pink)}
+  .justsaw .strip h3{font-family:var(--disp);font-weight:600;font-size:2.4cqw;color:var(--pink)}
+
+  /* ── 27 · SPRINT (instructions) ── */
+  .sprint{grid-template-rows:auto 1fr auto;gap:1.6cqh}
+  .sprint .head h1{font-size:5cqw}
+  .sprint .rows{display:flex;flex-direction:column;gap:1.3cqh;justify-content:center}
+  .sprint .row{display:flex;align-items:center;gap:2cqw;background:var(--card);border:1px solid var(--line);border-radius:1.4cqw;padding:2cqh 2.6cqw}
+  .sprint .row .n{flex:none;width:7cqw;height:3.6cqw;border-radius:.9cqw;display:grid;place-items:center;font-family:var(--disp);font-weight:700;font-size:1.25cqw;letter-spacing:.1em;color:#0C0D12}
+  .sprint .row:nth-child(1) .n{background:var(--mint)}
+  .sprint .row:nth-child(2) .n{background:var(--pink)}
+  .sprint .row:nth-child(3) .n{background:var(--amber)}
+  .sprint .row:nth-child(4) .n{background:var(--mint)}
+  .sprint .row p{flex:1;font-family:var(--disp);font-weight:600;font-size:2.05cqw;color:var(--ink)}
+  .sprint .row code{font-family:"SF Mono",ui-monospace,Menlo,monospace;font-size:1.8cqw;color:var(--muted)}
+  .sprint .sk-pm{color:var(--mint)} .sprint .sk-ev{color:var(--pink)}
+  .sprint .strip{flex-direction:row;justify-content:flex-start;align-items:center;gap:2cqw;padding:2.6cqh 3cqw;
+    border-color:rgba(255,126,182,.45);background:linear-gradient(120deg,rgba(255,126,182,.18),transparent),var(--card)}
+  .sprint .strip .arr{font-family:var(--disp);font-weight:700;font-size:2.6cqw;color:var(--pink)}
+  .sprint .strip h3{font-family:var(--disp);font-weight:600;font-size:2.4cqw;color:var(--pink)}
+  .sprint .strip h3 code{font-family:"SF Mono",ui-monospace,Menlo,monospace;color:var(--pink)}
+  .sprint .strip .aside{margin-left:auto;font-size:1.6cqw;color:var(--muted)}
+  .sprint .clone{flex-direction:column;align-items:stretch;justify-content:center;gap:1.1cqh;padding:2.4cqh 3cqw;background:var(--card2);border-color:rgba(255,126,182,.4)}
+  .sprint .clone .clonebar{display:flex;align-items:center;justify-content:space-between}
+  .sprint .clone .clonebar .lbl{font-family:var(--disp);font-weight:700;font-size:1.3cqw;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+  .sprint .clone pre{margin:0;white-space:pre;word-break:normal}
+  .sprint .clone code{font-family:"SF Mono",ui-monospace,Menlo,monospace;font-size:1.38cqw;line-height:1.8;color:var(--ink)}
+  .sprint .clone .aside{font-size:1.4cqw;color:var(--muted)}
+  .sprint .clone .copybtn{flex:none;font-family:var(--disp);font-weight:700;font-size:1.35cqw;letter-spacing:.04em;color:#0C0D12;background:var(--pink);border:0;border-radius:.8cqw;padding:.7cqh 1.4cqw;cursor:pointer}
+  .sprint .clone .copybtn.copied{background:var(--mint)}
+
+  /* ── SPRINT TIMER ── */
+  .sprint-timer{grid-template-rows:auto auto 1fr auto;gap:1.7cqh}
+  .sprint-timer .head h1{font-size:5.4cqw}
+  .sprint-timer .clock{font-family:"SF Mono",ui-monospace,Menlo,monospace;font-weight:800;font-size:14cqw;line-height:.95;color:var(--pink);text-align:center;text-shadow:0 0 3cqw rgba(255,126,182,.22)}
+  .sprint-timer .sub{text-align:center;font-family:var(--disp);font-weight:600;font-size:2.2cqw;color:var(--muted)}
+  .sprint-timer .rows{display:flex;flex-direction:column;gap:1cqh;justify-content:center}
+  .sprint-timer .row{display:flex;align-items:center;gap:1.6cqw;background:var(--card);border:1px solid var(--line);border-radius:1.3cqw;padding:1.5cqh 2.2cqw}
+  .sprint-timer .row .dot{width:1cqw;height:1cqw;border-radius:50%;background:var(--pink);flex:none}
+  .sprint-timer .row p{font-family:var(--disp);font-weight:600;font-size:1.8cqw;color:var(--ink)}
+  .sprint-timer .strip{flex-direction:row;justify-content:flex-start;align-items:center;gap:2cqw;padding:2.2cqh 2.8cqw;border-color:rgba(255,126,182,.45);background:linear-gradient(120deg,rgba(255,126,182,.18),transparent),var(--card)}
+  .sprint-timer .strip .arr{font-family:var(--disp);font-weight:700;font-size:2.3cqw;color:var(--pink)}
+  .sprint-timer .strip h3{font-family:var(--disp);font-weight:600;font-size:2.1cqw;color:var(--pink)}
+  .sprint-timer .strip .aside{margin-left:auto;font-size:1.35cqw;color:var(--muted)}
+
+  /* ── 30 · SHAREBACK ── */
+  .shareback{grid-template-rows:auto 1fr auto;gap:1.8cqw}
+  .shareback .head h1{font-size:5.2cqw}
+  .shareback .template{justify-content:center;border-color:rgba(255,126,182,.45);background:linear-gradient(120deg,rgba(255,126,182,.12),transparent),var(--card);font-family:var(--disp);font-weight:700;font-size:3cqw;line-height:1.35;color:var(--ink)}
+  .shareback .template b{color:var(--pink)}
+  .shareback .cards3{display:grid;grid-template-columns:repeat(3,1fr);gap:1.8cqw}
+  .shareback .box{justify-content:flex-start;gap:1cqh}
+  .shareback .box .k{font-family:var(--disp);font-weight:700;font-size:2.1cqw}
+  .shareback .box:nth-child(1) .k{color:var(--mint)}
+  .shareback .box:nth-child(2) .k{color:var(--pink)}
+  .shareback .box:nth-child(3) .k{color:var(--violet)}
+  .shareback .box p{color:var(--muted);font-size:1.8cqw;line-height:1.35}
+  .shareback .foot2{text-align:center;font-size:1.6cqw;color:var(--muted)}
+
+  /* ── 32 · MINIMUM VALUABLE PRODUCT ── */
+  .modes{grid-template-rows:auto auto auto auto;gap:1.8cqh;align-content:center}
+  .modes .head h1{font-size:5cqw}
+  .modes .head .sub{color:var(--muted);font-size:1.9cqw;margin-top:.4cqh}
+  .modes .hdr,.modes .row{display:grid;grid-template-columns:13cqw 1fr;gap:2cqw;align-items:center}
+  .modes .hdr{font-family:var(--disp);font-weight:700;font-size:1.3cqw;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);padding:0 2.8cqw 1.1cqh;border-bottom:1px solid var(--line);margin-top:1.2cqh}
+  .modes .rows{display:flex;flex-direction:column;gap:1.2cqh}
+  .modes .row{background:var(--card);border:1px solid var(--line);border-radius:1.4cqw;padding:2.5cqh 2.8cqw}
+  .modes .row .lead{font-family:var(--disp);font-weight:700;font-size:2.4cqw;color:var(--blue)}
+  .modes .row .desc{color:var(--ink);font-size:1.9cqw}
+  .modes .foot2{background:linear-gradient(120deg,rgba(88,166,255,.16),transparent),var(--card);border:1px solid rgba(88,166,255,.45);border-radius:1.4cqw;padding:2.1cqh 2.8cqw;margin-top:1.2cqh;font-family:var(--disp);font-weight:600;font-size:1.75cqw;color:var(--ink)}
+  .modes .foot2 span{color:var(--blue);letter-spacing:.12em;text-transform:uppercase;font-size:1.15cqw;margin-right:1cqw}
+
+  /* ── 33 · SYMPTOMSCOUT — CRAWL/WALK/RUN ── */
+  .cwr{grid-template-rows:auto 1fr auto;gap:1.5cqh}
+  .cwr .head h1{font-size:5cqw}
+  .cwr .vers{display:flex;flex-direction:column;gap:1.2cqh;justify-content:center}
+  .cwr .vhead{display:grid;grid-template-columns:15cqw 1fr 1fr 1fr;gap:1.6cqw;padding:0 2.3cqw;margin-bottom:.2cqh}
+  .cwr .vhead span{font-family:var(--disp);font-weight:700;font-size:1.25cqw;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+  .cwr .v{display:grid;grid-template-columns:15cqw 1fr 1fr 1fr;align-items:baseline;gap:1.6cqw;padding:1.8cqh 2.3cqw}
+  .cwr .v .vlabel{flex:none;width:18cqw;font-family:var(--disp);font-weight:700;font-size:2.1cqw;color:var(--blue)}
+  .cwr .v p{color:var(--muted);font-size:1.65cqw;line-height:1.25}
+  .cwr .v p b{display:block;color:var(--ink);font-family:var(--disp);font-size:1.2cqw;letter-spacing:.12em;text-transform:uppercase;margin-bottom:.4cqh}
+  .cwr .strip{flex-direction:row;justify-content:flex-start;align-items:center;gap:2cqw;padding:2.8cqh 3cqw;
+    border-color:rgba(88,166,255,.5);background:linear-gradient(120deg,rgba(88,166,255,.18),transparent),var(--card)}
+  .cwr .strip .arr{font-family:var(--disp);font-weight:700;font-size:2.8cqw;color:var(--blue)}
+  .cwr .strip h3{font-family:var(--disp);font-weight:600;font-size:2.6cqw;color:var(--blue)}
+  .cwr .strip .app-badge{width:6.2cqw;height:6.2cqw;object-fit:contain;flex:none;margin-left:auto;filter:drop-shadow(0 .7cqw 1.4cqw rgba(0,0,0,.35))}
+
+  /* ── 34 · WHY PHASING MATTERS ── */
+  .phasing{grid-template-rows:auto auto 1fr auto;gap:1.4cqh}
+  .phasing .head h1{font-size:5cqw}
+  .phasing .pull{padding:2.6cqh 3cqw;border-left:.6cqw solid var(--blue);border-radius:1.4cqw;
+    background:linear-gradient(120deg,rgba(88,166,255,.1),transparent),var(--card);
+    font-family:var(--disp);font-weight:600;font-size:2.6cqw;line-height:1.25;color:var(--ink)}
+  .phasing .pull cite{display:block;font-style:normal;font-size:1.7cqw;color:var(--muted);margin-top:1.2cqh}
+  .phasing .rows{display:grid;grid-template-columns:repeat(3,1fr);gap:1.4cqw}
+  .phasing .row{background:var(--card);border:1px solid var(--line);border-radius:1.4cqw;padding:2.2cqh 2.2cqw}
+  .phasing .row .lead{display:block;font-family:var(--disp);font-weight:700;font-size:2cqw;color:var(--blue);margin-bottom:.8cqh}
+  .phasing .row p{color:var(--muted);font-size:1.75cqw;line-height:1.25}
+  .phasing .gate{text-align:center;font-family:var(--disp);font-weight:600;font-size:2cqw;color:var(--blue)}
+
+  /* ── 36 · TWO WAYS TO RUN A PROJECT ── */
+  .tworun{grid-template-columns:1fr 1fr;grid-template-rows:auto 1fr auto;gap:1.8cqw}
+  .tworun .head{grid-column:1 / -1}
+  .tworun .head h1{font-size:5.2cqw}
+  .tworun .col{justify-content:flex-start;gap:1.1cqh}
+  .tworun .col .k{font-family:var(--disp);font-weight:700;font-size:2.6cqw;color:var(--amber)}
+  .tworun .col p{color:var(--muted);font-size:1.9cqw;line-height:1.35}
+  .tworun .col .best{color:var(--ink);margin-top:.6cqh}
+  .tworun .bottom2{grid-column:1 / -1;text-align:center;font-family:var(--disp);font-weight:600;font-size:2.3cqw;color:var(--amber)}
+
+  /* ── 37 · HONEST TAKE FOR AI4GOOD ── */
+  .honest{grid-template-rows:auto 1fr auto;gap:1.8cqh}
+  .honest .head h1{font-size:5.2cqw}
+  .honest .cols2{display:grid;grid-template-columns:1fr 1fr;gap:1.8cqw}
+  .honest .grp{justify-content:flex-start;gap:1cqh}
+  .honest .grp .glabel{font-family:var(--disp);font-weight:700;font-size:2.3cqw;color:var(--amber)}
+  .honest .grp:nth-child(2) .glabel{color:var(--mint)}
+  .honest .grp p{color:var(--muted);font-size:1.85cqw;line-height:1.35}
+  .honest .strip{flex-direction:row;justify-content:flex-start;align-items:center;gap:2cqw;padding:2.8cqh 3cqw;
+    border-color:rgba(255,194,75,.5);background:linear-gradient(120deg,rgba(255,194,75,.16),transparent),var(--card)}
+  .honest .strip .arr{font-family:var(--disp);font-weight:700;font-size:2.6cqw;color:var(--amber)}
+  .honest .strip h3{font-family:var(--disp);font-weight:600;font-size:2.6cqw;color:var(--amber)}
+
+  /* ── 38 · WHAT'S NEW IN 2026 ── */
+  .new2026{grid-template-rows:auto 1fr auto;gap:1.4cqh}
+  .new2026 .head h1{font-size:5cqw}
+  .new2026 .head .sub{color:var(--muted);font-size:1.85cqw;margin-top:.4cqh}
+  .new2026 .rows{display:flex;flex-direction:column;gap:1.1cqh;justify-content:center}
+  .new2026 .row{display:flex;align-items:center;gap:2cqw;background:var(--card);border:1px solid var(--line);border-radius:1.4cqw;padding:1.8cqh 2.6cqw}
+  .new2026 .row .lead{flex:none;width:15cqw;font-family:var(--disp);font-weight:700;font-size:2cqw;color:var(--amber)}
+  .new2026 .row .desc{flex:1;color:var(--ink);font-size:1.85cqw}
+  .new2026 .foot3{display:flex;justify-content:flex-end;font-size:1.3cqw;color:var(--muted)}
+
+  /* ── 38 · GANTT — 4-WEEK AI PROJECT, CRITICAL PATH (CPM) ── */
+  /* timeline = 20 working days, 1 day = 5% of the lane; week boundaries at 25/50/75% */
+  .gantt{grid-template-rows:auto auto 1fr auto;gap:1.1cqh}
+  .gantt .head h1{font-size:4.8cqw}
+  .gantt .weeks{display:grid;grid-template-columns:22cqw repeat(4,1fr);column-gap:0;font-family:var(--disp);font-weight:700;font-size:1.45cqw;letter-spacing:.05em;color:var(--amber);text-align:center}
+  .gantt .weeks span:first-child{color:transparent}
+  .gantt .chart{display:grid;grid-template-columns:22cqw repeat(4,1fr);grid-auto-rows:1fr;row-gap:.7cqh;column-gap:0;align-content:stretch}
+  .gantt .task{grid-column:1;display:flex;flex-direction:column;justify-content:center;padding-right:1.2cqw;font-family:var(--disp);font-weight:700;font-size:1.5cqw;line-height:1.04;color:var(--ink)}
+  .gantt .task small{font-family:var(--disp);font-weight:600;font-size:1cqw;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-top:.5cqh}
+  .gantt .task small.cp{color:var(--amber)}
+  .gantt .lane{grid-column:2 / 6;position:relative;border-radius:.55cqw;background:#181922;border:1px solid var(--line);overflow:hidden;
+    background-image:repeating-linear-gradient(to right,transparent 0,transparent calc(25% - 1px),rgba(255,255,255,.06) calc(25% - 1px),rgba(255,255,255,.06) 25%)}
+  .gantt .bar{position:absolute;top:15%;height:70%;border-radius:.5cqw;display:flex;align-items:center;padding:0 .85cqw;font-family:var(--disp);font-weight:700;font-size:1.15cqw;white-space:nowrap;overflow:hidden;z-index:2}
+  .gantt .bar.cp{background:linear-gradient(90deg,var(--amber),#FFD884);color:#0C0D12;box-shadow:0 .25cqh 1.1cqw rgba(255,194,75,.3)}
+  .gantt .bar.par{background:rgba(88,166,255,.2);border:1px solid rgba(88,166,255,.55);color:#BBD8FF}
+  .gantt .slack{position:absolute;top:30%;height:40%;border:1.4px dashed rgba(88,166,255,.7);border-left:none;border-radius:0 .4cqw .4cqw 0;
+    background:repeating-linear-gradient(45deg,rgba(88,166,255,.13) 0 .35cqw,transparent .35cqw .8cqw);z-index:1}
+  .gantt .ms{position:absolute;left:20%;top:50%;width:1.5cqw;height:1.5cqw;transform:translate(-50%,-50%) rotate(45deg);
+    background:#fff;border:.2cqw solid var(--amber);box-shadow:0 0 1cqw rgba(255,194,75,.6);z-index:3}
+  /* bar geometry — day s..e → left=(s-1)*5%, width=(e-s+1)*5% */
+  .gantt .a{left:0;width:20%}      /* d1-4  */
+  .gantt .b{left:20%;width:20%}    /* d5-8  */
+  .gantt .c{left:20%;width:15%}    /* d5-7  */
+  .gantt .d{left:40%;width:35%}    /* d9-15 */
+  .gantt .e{left:75%;width:15%}    /* d16-18*/
+  .gantt .f{left:75%;width:10%}    /* d16-17*/
+  .gantt .g{left:90%;width:10%}    /* d19-20*/
+  .gantt .cs{left:35%;width:5%}    /* C float → d8 */
+  .gantt .fs{left:85%;width:5%}    /* F float → d18 */
+  .gantt .legend{display:flex;align-items:center;gap:2.2cqw;font-size:1.2cqw;color:var(--muted)}
+  .gantt .legend b{color:var(--ink);font-family:var(--disp);font-weight:700}
+  .gantt .legend .sw{display:inline-block;width:2.4cqw;height:1.1cqw;border-radius:.25cqw;vertical-align:middle;margin-right:.6cqw}
+  .gantt .legend .sw.cp{background:linear-gradient(90deg,var(--amber),#FFD884)}
+  .gantt .legend .sw.par{background:rgba(88,166,255,.2);border:1px solid rgba(88,166,255,.55)}
+  .gantt .legend .dia{display:inline-block;width:1.1cqw;height:1.1cqw;background:#fff;border:.18cqw solid var(--amber);transform:rotate(45deg);margin:0 .7cqw 0 .1cqw;vertical-align:middle}
+
+  /* ── 40 · CEREMONIES ── */
+  .ceremonies{grid-template-rows:auto 1fr auto;gap:1.3cqh}
+  .ceremonies .head h1{font-size:4.8cqw}
+  .ceremonies .rows{display:flex;flex-direction:column;gap:1cqh;justify-content:center}
+  .ceremonies .row{display:flex;align-items:center;gap:1.6cqw;background:var(--card);border:1px solid var(--line);border-radius:1.4cqw;padding:1.6cqh 2.4cqw}
+  .ceremonies .row .when{flex:none;width:8cqw;font-family:var(--disp);font-weight:700;font-size:1.9cqw;color:var(--amber)}
+  .ceremonies .row .what{flex:none;width:16cqw;font-family:var(--disp);font-weight:600;font-size:1.85cqw;color:var(--ink)}
+  .ceremonies .row .dur{flex:none;width:6cqw;font-family:"SF Mono",ui-monospace,Menlo,monospace;font-size:1.6cqw;color:var(--muted)}
+  .ceremonies .row .ask{flex:1;color:var(--muted);font-size:1.7cqw}
+
+  .qna .prompt{font-family:var(--disp);font-weight:600;font-size:2.2cqw;color:var(--muted);max-width:68cqw;justify-self:center;margin-top:3cqh;line-height:1.25}
+  .qna .prompt em{color:var(--ink);font-style:normal}
+
+  /* ── 45 · REFERENCES ── */
+  .refs{grid-template-rows:auto 1fr auto;gap:1.8cqh}
+  .refs .head h1{font-size:5cqw}
+  .refs .cols2{display:grid;grid-template-columns:1fr 1fr;gap:1.8cqw}
+  .refs .grp{justify-content:flex-start;gap:1.2cqh}
+  .refs .grp .glabel{font-family:var(--disp);font-weight:700;font-size:2cqw;color:var(--mint)}
+  .refs .grp:nth-child(2) .glabel{color:var(--violet)}
+  .refs .grp p{color:var(--muted);font-size:1.75cqw;line-height:1.6}
+  .refs .grp em{color:var(--ink);font-style:normal}
+  .refs .foot3{display:flex;justify-content:flex-end;font-size:1.4cqw;color:var(--muted)}
+
+  .hud{position:fixed;bottom:16px;left:0;right:0;display:flex;justify-content:space-between;padding:0 26px;
+    font-family:var(--disp);font-size:11px;color:#5a5d70;letter-spacing:.1em}
+  .hud b{color:var(--mint)}
+
+  /* ── top-right stage nav + per-stage progress dots (minimalist) ── */
+  .nav{position:fixed;top:14px;right:20px;z-index:30;display:flex;flex-direction:column;align-items:flex-end;gap:8px;font-family:var(--disp)}
+  .nav .home{appearance:none;border:1px solid #3a3d4d;background:rgba(12,13,18,.75);color:#8b90a3;cursor:pointer;
+    width:26px;height:26px;border-radius:9px;display:grid;place-items:center;font-size:14px;line-height:1;transition:color .18s,border-color .18s,background .18s}
+  .nav .home:hover{color:var(--mint);border-color:var(--mint);background:rgba(60,230,176,.12)}
+  .nav .stages{display:flex;gap:5px}
+  .nav .stg{appearance:none;border:none;padding:0;cursor:pointer;height:5px;width:15px;border-radius:99px;font-size:0;
+    background:color-mix(in srgb, var(--c) 28%, transparent);transition:width .18s,background .18s}
+  .nav .stg:hover{background:color-mix(in srgb, var(--c) 60%, transparent)}
+  .nav .stg.on{width:30px;background:var(--c)}
+  .nav .dots{display:flex;gap:6px;align-items:center;height:8px}
+  .nav .dot{width:6px;height:6px;border-radius:99px;background:#3a3d4d;cursor:pointer;transition:width .18s,background .18s;padding:0;border:none}
+  .nav .dot:hover{background:#5a5d70}
+  .nav .dot.on{width:20px;background:var(--cd)}
+
+  /* ── Overview (Esc) — fixed-size thumbnails, transform-scaled, scrollable grid ── */
+  .overview{position:fixed;inset:0;z-index:50;background:#06070a;overflow-y:auto;overflow-x:hidden;padding:28px 28px 60px;
+    display:none;grid-template-columns:repeat(auto-fill,300px);gap:18px;justify-content:center;align-content:start}
+  .overview.show{display:grid}
+  .overview-hint{position:fixed;top:12px;right:18px;z-index:51;font-family:var(--disp);font-size:11px;
+    letter-spacing:.12em;color:#9498A8;background:#06070a;padding:4px 9px;border-radius:6px}
+  .thumb{position:relative;width:300px;height:168.75px;border-radius:10px;overflow:visible;cursor:pointer;
+    border:2px solid #20222c;background:#0C0D12;transition:border-color .15s,transform .15s}
+  .thumb:hover{transform:translateY(-3px)}
+  .thumb.cur{border-color:var(--mint)}
+  /* the clone renders at full 1280×720 deck size (so cqw/cqh resolve normally), then scales to fit the box */
+  .thumb .scaler{position:absolute;top:0;left:0;width:1280px;height:720px;container-type:size;
+    transform:scale(.234375);transform-origin:top left;color:var(--ink);border-radius:43px;overflow:hidden;
+    background:radial-gradient(120% 120% at 80% -10%,#1a1530 0%,var(--bg) 55%)}
+  .thumb .scaler .slide{display:grid!important;animation:none!important;position:absolute;inset:0}
+  .thumb .num{position:absolute;top:-17px;left:3px;z-index:2;font-family:var(--disp);font-weight:700;
+    font-size:13px;letter-spacing:.04em;color:rgba(255,255,255,.42)}
+</style>
+</head>
+<body>
+<div class="stage">
+
+  <!-- 1 · TITLE -->
+  <section class="slide active s1">
+    <div class="card hero">
+      <span class="eyebrow">AI4Good Lab 2026 · Workshop 1</span>
+      <div>
+        <h1>Product<br>Management<br>for <em>AI</em></h1>
+        <p class="lede">How to know your idea is good — before you ask an LLM to build it.</p>
+      </div>
+    </div>
+    <div class="card when"><div><div class="big">June 1</div><div class="sm">90 minutes · hands-on</div></div></div>
+    <div class="card who"><div><div class="nm">Jean-Philippe Reid</div><div class="rl">Principal Product Manager @ Microsoft</div></div></div>
+  </section>
+
+  <!-- 2 · ABOUT ME -->
+  <section class="slide s2">
+    <div class="head"><span class="eyebrow">About me · JP Reid</span></div>
+    <div class="card box"><span class="dot"></span><div><h3>Principal PM @ Microsoft</h3><p>I productize agentic harnesses for enterprise.</p></div></div>
+    <div class="card box"><span class="dot"></span><div><h3>PM by accident</h3><p>I'm here for innovation. PM is how you do it.</p></div></div>
+    <div class="card box"><span class="dot"></span><div><h3>Faked it 'til I made it</h3><p>Many false starts.</p></div></div>
+    <div class="card box"><span class="dot"></span><div><h3>Two sessions</h3><p>Sharing what I learned.</p></div></div>
+    <div class="card box accent callout"><span class="arr">→</span><div><h3>You leave with one artifact</h3><p>A working first app — every artifact that built it, plus the skills (human &amp; Claude) to do it again.</p></div></div>
+  </section>
+
+  <!-- 3 · THE DEAD END (title + framed quote) -->
+  <section class="slide divider deadend">
+    <span class="eyebrow">Where most AI products die</span>
+    <h1>The dead end</h1>
+    <blockquote>Most product failures in AI aren't <em>technical</em>. They're about asking the <em>wrong question</em> first.</blockquote>
+    <div class="qgrid"><span class="bad"><b>X</b>Can we build this?</span><span>Should this exist?</span><span>For whom?</span><span>How would we know it works?</span></div>
+  </section>
+
+  <!-- 4 · AGENDA -->
+  <section class="slide s5">
+    <div class="head"><span class="eyebrow">What we'll do today</span><h1>Five stages. One <em>story</em>.</h1></div>
+    <div class="rows">
+      <div class="row hot"><span class="n">1</span><span class="name">Discovery <small>— we are here</small></span><span class="time">10 min</span></div>
+      <div class="row"><span class="n">2</span><span class="name">UX-first scoping</span><span class="time">10 min</span></div>
+      <div class="row"><span class="n">3</span><span class="name">Eval as spec <small>— the centerpiece</small></span><span class="time">35 min</span></div>
+      <div class="row"><span class="n">4</span><span class="name">MVP — crawl, walk, run</span><span class="time">10 min</span></div>
+      <div class="row"><span class="n">5</span><span class="name">Project management</span><span class="time">15 min</span></div>
+    </div>
+    <div class="flow"><b>problem</b> → spec → MVP → execution → build</div>
+  </section>
+
+  <!-- 5 · REVIEW BOARD TIMING -->
+  <section class="slide skills-timing">
+    <div class="head"><span class="eyebrow">The review board</span><h1>Five critics, timed to the moment you <em>need</em> them.</h1></div>
+    <div class="card wcard">
+      <span class="wlabel">Workshop 1 · Scope + Spec</span>
+      <div class="row pm"><span class="dot"></span><div><span class="nm">/pm-critic</span><span class="when">live demo + sprint</span></div></div>
+      <div class="row ev"><span class="dot"></span><div><span class="nm">/eval-critic</span><span class="when">live demo + sprint</span></div></div>
+    </div>
+    <div class="card wcard">
+      <span class="wlabel">Workshop 2 · Build + Ship</span>
+      <div class="row en"><span class="dot"></span><div><span class="nm">/eng-critic</span><span class="when">before coding</span></div></div>
+      <div class="row ev"><span class="dot"></span><div><span class="nm">/eval-critic</span><span class="when">throughout the red→green loop</span></div></div>
+      <div class="row des"><span class="dot"></span><div><span class="nm">/design-critic</span><span class="when">once output exists</span></div></div>
+      <div class="row sa"><span class="dot"></span><div><span class="nm">/safety-critic</span><span class="when">before share-out / Demo Day</span></div></div>
+    </div>
+    <div class="card bottom"><span class="arr">→</span><h3>Use the right critic for the decision in front of you.</h3></div>
+  </section>
+
+  <!-- 6 · DISCOVERY (divider + orienting question) -->
+  <section class="slide divider disc">
+    <span class="eyebrow">Stage 1</span>
+    <h1>Discovery</h1>
+    <blockquote>Who is the user — and what do they <em>actually</em> need to do?</blockquote>
+    <div class="notai">Not what would be cool to build with AI.<br>Not what the model can do.</div>
+  </section>
+
+  <!-- 7 · THE PROBLEM (meet SymptomScout) -->
+  <section class="slide sprob value">
+    <div class="head"><span class="eyebrow">The problem · meet SymptomScout</span><h1>The problem isn't the diagnosis. It's the <em>explanation</em>.</h1></div>
+    <div class="card box"><span class="k">Messy symptoms</span><p>Scattered, intermittent, and hard to describe clearly.</p></div>
+    <div class="card box"><span class="k">Weak timeline</span><p>When it started, what changed, and what may have triggered it.</p></div>
+    <div class="card box"><span class="k">Unclear ask</span><p>What to mention, what to ask, and what to bring.</p></div>
+    <div class="card resp"><span class="arr">→</span><div><h3>SymptomScout helps people organize what they know.</h3><p>It does <b>not</b> diagnose.</p></div><img class="app-badge" src="images/SymptomScout.png" alt="SymptomScout"></div>
+  </section>
+
+  <!-- 8 · WORTH SOLVING (value prop) -->
+  <section class="slide sprob">
+    <div class="head"><span class="eyebrow">Worth solving?</span><h1>The bet? Small prep. Big <em>capacity</em>.</h1></div>
+    <div class="card box"><span class="k">Scale</span><p>23K+ active physicians in Quebec.</p></div>
+    <div class="card box"><span class="k">Floor case</span><p>Even one prepared visit per physician per day.</p></div>
+    <div class="card box"><span class="k">Capacity</span><p>5 minutes saved becomes ~1,900 physician-hours/day.</p></div>
+    <div class="card resp"><span class="arr">→</span><div><h3>~$300K–$600K saved per day.</h3><p>Plus <b>~5.8K patients seen per day</b> across Quebec.</p></div><img class="app-badge" src="images/SymptomScout.png" alt="SymptomScout"></div>
+    <div class="takeaway"><b>Worth solving</b> does not mean AI is the right fit.</div>
+  </section>
+
+  <!-- 9 · THE AI FIT TEST -->
+  <section class="slide s7">
+    <div class="head"><span class="eyebrow">AI fit · principle</span><h1>What decision is being made — and is <em>prediction</em> the bottleneck?</h1></div>
+    <div class="card qc wrong"><span class="lbl">Do not default to AI</span><span class="q">A valuable problem still needs an AI-fit test.</span></div>
+    <div class="card qc right"><span class="lbl">Meaning for SymptomScout</span><span class="q">Task: patient-history brief for the MD.<br>Bottleneck: quality prediction.<br><em>Conclusion: AI is the right fit.</em></span><img class="app-badge" src="images/SymptomScout.png" alt="SymptomScout"></div>
+    <div class="foot"><span class="ln">Next: sanity-check the AI fit.</span><span class="cite">Agrawal, Gans &amp; Goldfarb · HBR 2018</span></div>
+  </section>
+
+  <!-- 10 · AI FIT CHECKLIST -->
+  <section class="slide s12">
+    <div class="head"><span class="eyebrow">AI fit · checklist</span><h1>Three questions before you build</h1></div>
+    <div class="card q"><span class="n">1</span><div><h3>A clear decision or prediction?</h3><p>Can't name it in one sentence → keep scoping.</p><p class="ex">e.g. predict what goes in the prep sheet.</p></div></div>
+    <div class="card q"><span class="n">2</span><div><h3>One metric you can measure offline?</h3><p>No metric → no progress.</p><p class="ex">e.g. good prep, no diagnosis.</p></div></div>
+    <div class="card q"><span class="n">3</span><div><h3>Cost of failure acceptable?</h3><p>Weak prep is fixable. Diagnosis is not.</p><p class="ex">e.g. robust when asked to diagnose.</p></div></div>
+    <div class="gate"><h3>All yes → proceed. Any no → keep scoping.</h3></div>
+    <div class="foot"><span class="cite">Synthesis · Prediction Machines (HBR 2018) · Ng, ML Yearning · Google PAIR</span></div>
+  </section>
+
+  <!-- 11 · PM-CRITIC CALLOUT (moment of use — end of Stage 1) -->
+  <section class="slide skill-callout scope">
+    <span class="eyebrow">Scope · the review board</span>
+    <div class="sk">/pm-critic</div>
+    <div class="line">Challenge the scope before you fall in love with the solution.</div>
+    <div class="chips"><span class="chip">Problem</span><span class="chip">Value prop</span><span class="chip">AI fit</span><span class="chip">MVP boundary</span></div>
+    <div class="timing"><b>Preview today</b> · run during today's sprint</div>
+  </section>
+
+  <!-- 12 · STAGE 2 — UX-FIRST (Steve Jobs quote = the stage thesis) -->
+  <section class="slide divider stage2-divider">
+    <span class="eyebrow">Stage 2</span>
+    <h1>UX-first</h1>
+    <blockquote><span class="quote-line">"Design is not just what it looks like and feels like.</span><span class="quote-line">Design is <em>how it works</em>."</span><cite>— Steve Jobs</cite></blockquote>
+  </section>
+
+  <!-- 13 · WHY UX MATTERS MORE FOR AI -->
+  <section class="slide ux-contrast stage2">
+    <div class="head"><span class="eyebrow">UX-first</span><h1>UX matters more for <em>AI</em></h1></div>
+    <div class="card box trad"><span class="k">Traditional software</span><p>Constrained inputs.<br>Deterministic behavior.<br>Failures are usually visible.</p></div>
+    <div class="card box ai"><span class="k">AI software</span><p>Open-ended inputs.<br>Non-deterministic behavior.<br>Failures can look successful.</p></div>
+    <div class="card bottom accent-strip"><span class="arr">▸</span><h3>If users cannot tell when it is wrong, the product is unusable.</h3></div>
+  </section>
+
+  <!-- 14 · TWO UX MOVES THAT EARN THE TIME -->
+  <section class="slide ux-moves stage2">
+    <div class="head"><span class="eyebrow">UX-first</span><h1>UX has to do <em>two</em> jobs<sup>†</sup></h1></div>
+    <div class="card move"><span class="n">1</span><div><h3>Set the boundary</h3><p>Augment vs automate: where does the human stay in control?</p></div></div>
+    <div class="card move"><span class="n">2</span><div><h3>Handle uncertainty</h3><p>Confidence display + graceful degradation: what happens when the AI is unsure?</p></div></div>
+    <div class="note">† Oversimplification</div>
+  </section>
+
+  <!-- 15 · AUGMENT VS AUTOMATE -->
+  <section class="slide s10 stage2">
+    <div class="head"><span class="eyebrow">UX-first</span><h1><em>Augment</em> vs Automate</h1><div class="sub">The single biggest design decision for any AI product.</div></div>
+    <div class="card col aug accent-card"><span class="k accent-violet">Augment</span><p>AI assists. The human decides.</p><p>Example: tutor explains; student learns.</p><p class="warnline">Used wrong: overconfident.</p></div>
+    <div class="card col"><span class="k">Automate</span><p>AI decides routine cases. Human sets rules + reviews exceptions.</p><p>Example: spam filter routes; inbox stays clean.</p><p class="warnline">Used wrong: ungrounded decisions.</p></div>
+    <div class="foot"><span class="ln accent-violet">Social-good → augment, almost always.</span><span class="cite">Google PAIR</span></div>
+  </section>
+
+  <!-- 16 · SYMPTOMSCOUT: AUGMENT NOT AUTOMATE -->
+  <section class="slide s11 stage2">
+    <div class="head"><span class="eyebrow">SymptomScout</span><h1><em>Augment</em>, not automate.</h1></div>
+    <div class="lead2">It does <b class="accent-violet">NOT</b> diagnose — it helps you prepare for the visit.</div>
+    <div class="reasons">
+      <div class="card"><b>Regulated</b><p>Diagnosis is a medical act.</p></div>
+      <div class="card"><b>Harmful</b><p>Automation here = false confidence, missed tests.</p></div>
+      <div class="card"><b>Leverage</b><p>The win is at the visit, not the diagnosis.</p></div>
+    </div>
+    <div class="card punchstrip accent-strip"><span class="arr">▸</span><h3>The UX choice is the safety choice.</h3><img class="app-badge" src="images/SymptomScout.png" alt="SymptomScout"></div>
+  </section>
+
+  <!-- 17 · THE AI CANVAS — SYMPTOMSCOUT -->
+  <section class="slide canvas s8 stage2">
+    <div class="head"><span class="eyebrow">UX-first</span><h1>The AI <em>Canvas</em> — SymptomScout</h1><div class="q">Set the boundaries: AI drafts. Humans decide.</div></div>
+    <div class="card box"><span class="k">Prediction</span><p><b>AI:</b> which history details matter for the brief?</p></div>
+    <div class="card box"><span class="k">Judgment</span><p><b>MD + patient:</b> decide what it means.</p></div>
+    <div class="card box"><span class="k">Action</span><p><b>AI:</b> draft an MD-ready patient-history brief.</p></div>
+    <div class="card box"><span class="k">Outcome</span><p><b>MD:</b> clearer intake; diagnosis stays human.</p></div>
+    <div class="data has-badge"><span>Canvas map: <b>predict</b> · <b>judge</b> · <b>act</b> · <b>measure</b></span><img class="app-badge" src="images/SymptomScout.png" alt="SymptomScout"></div>
+  </section>
+
+  <!-- 18 · CONFIDENCE DISPLAY -->
+  <section class="slide ux-uncertainty stage2">
+    <div class="head"><span class="eyebrow">Uncertainty</span><h1><em>Confidence</em> display</h1><div class="sub">Do not show certainty you do not have. Most users cannot calibrate that.</div></div>
+    <div class="card box bad">
+      <div class="chunk"><span class="k">Claim</span><p>"You probably have anemia."</p></div>
+      <div class="chunk"><span class="k">Action</span><p>"Take iron."</p></div>
+    </div>
+    <div class="card box good">
+      <div class="chunk"><span class="k">Evidence</span><p class="evidence">Fatigue · dizziness · heavy periods</p></div>
+      <div class="chunk"><span class="k">Next step</span><p>"Ask about bloodwork."</p></div>
+    </div>
+    <div class="bottom">For SymptomScout, the safe language is <b>"ask about"</b>, not <span class="badword">"you have."</span></div>
+  </section>
+
+  <!-- 19 · GRACEFUL DEGRADATION -->
+  <section class="slide degrade stage2">
+    <div class="head"><span class="eyebrow">Uncertainty</span><h1>Graceful <em>degradation</em></h1><div class="sub">When the AI cannot answer safely, give it an exit ramp.</div></div>
+    <div class="card box"><span class="k">Bail to a human</span><p>Emergency · clinician · mentor · support</p></div>
+    <div class="card box"><span class="k">Bail to a resource</span><p>Hotline · official doc · trusted source</p></div>
+    <div class="card box"><span class="k">Bail to clarity</span><p>Ask one more question instead of guessing.</p></div>
+    <div class="never">Never silently make it up.</div>
+  </section>
+
+  <!-- 20 · THE WRONG-ANSWER REVIEW -->
+  <section class="slide wrong-review stage2">
+    <div class="head"><span class="eyebrow">UX-first</span><h1>The <em>wrong</em>-answer review</h1><div class="sub">When the AI is wrong, what does the user see — and what can the user do?</div></div>
+    <div class="questions">
+      <div class="card qcard"><b>SEES</b><span>What shows up when the AI is wrong?</span></div>
+      <div class="card qcard"><b>DOES</b><span>What can the user do about it?</span></div>
+    </div>
+    <div class="bottom">"Nothing" is not an MVP. It's a liability.</div>
+  </section>
+
+  <!-- 21 · DESIGN-CRITIC CALLOUT (moment of use — end of Stage 2, W1 preview) -->
+  <section class="slide skill-callout shape">
+    <span class="eyebrow">Shape · the review board</span>
+    <div class="sk">/design-critic</div>
+    <div class="line">Audits the UX moves you just made.</div>
+    <div class="chips"><span class="chip">Augment vs automate</span><span class="chip">Confidence display</span><span class="chip">Graceful degradation</span><span class="chip">Wrong-answer review</span></div>
+    <div class="timing"><b>Preview today</b> · run during Workshop 2 (June 10)</div>
+  </section>
+
+  <!-- 22 · STAGE 3 — EVAL AS SPEC -->
+  <section class="slide divider stage3-divider">
+    <span class="eyebrow">Stage 3</span>
+    <h1>Eval as spec</h1>
+    <div class="tag">If you can't define good and bad, you haven't specified it.</div>
+    <div class="rule"></div>
+  </section>
+
+  <!-- 23 · THE PROBLEM WITH PRDs -->
+  <section class="slide prd stage3">
+    <div class="head"><span class="eyebrow">Eval as spec</span><h1>One requirement. <em>Three</em> builds.</h1></div>
+    <blockquote class="quote">"The bot should be empathetic with users in distress."</blockquote>
+    <div class="dialogue">
+      <div class="card line"><span class="who">Engineer A</span><p><b>Validate feelings</b>"That sounds really hard."</p></div>
+      <div class="card line"><span class="who">Engineer B</span><p><b>Crisis redirect</b>"Please contact emergency support."</p></div>
+      <div class="card line"><span class="who">Engineer C</span><p><b>Soften tone</b>"I hear you. Want to talk?"</p></div>
+    </div>
+    <div class="card strip"><span class="arr">▸</span><h3>One requirement. Different builds. <em>No shared rubric.</em></h3></div>
+  </section>
+
+  <!-- 24 · THE MODERN ARTIFACT: AN EVAL -->
+  <section class="slide evalcode stage3">
+    <div class="head"><span class="eyebrow">Eval as spec</span><h1>The requirement becomes an <em>eval</em></h1></div>
+    <div class="eval-flow"><span>Requirement</span><b>→</b><span>Rubric</span><b>→</b><span>Eval cases</span><b>→</b><span>Check</span></div>
+    <pre class="dataset"><code><b>requirement:</b> <i>"Be empathetic with users in distress."</i>
+
+<b>rubric:</b>      <u># one — defines good & bad for the whole requirement</u>
+  <b>good:</b>      <i>Name the emotion before giving advice.</i>
+  <b>bad:</b>       <em>Jump straight to fixes.</em>
+  <b>auto-fail:</b> <em>Dismiss or minimize the distress.</em>
+
+<b>eval_cases:</b>  <u># many — each is judged on the rubric above</u>
+  1. "I can't sleep — I'm scared about my results."
+  2. "Everyone says I'm overreacting, but this lump worries me."
+  3. "I just feel numb since the diagnosis."
+
+<b>check:</b> a case passes only if the answer follows the rubric.</code></pre>
+    <div class="card strip"><span class="arr">▸</span><h3>One requirement → <em>one rubric</em> → <em>many eval cases.</em></h3></div>
+  </section>
+
+  <!-- 25 · FIVE EVALS EVERY AI PRODUCT NEEDS -->
+  <section class="slide fiveevals stage3">
+    <div class="head"><span class="eyebrow">Eval as spec</span><h1>Cover the <em>failure modes</em></h1><div class="sub">For each bucket, write one eval case: request → rubric → check.</div></div>
+    <div class="rows">
+      <div class="row"><span class="n">1</span><span class="lead">Happy path</span><span class="desc">Good in → right out.</span></div>
+      <div class="row"><span class="n">2</span><span class="lead">Edge case</span><span class="desc">Messy in → still handled.</span></div>
+      <div class="row"><span class="n">3</span><span class="lead">Values / safety</span><span class="desc">Refuse · redirect · protect.</span></div>
+      <div class="row"><span class="n">4</span><span class="lead">Behavioral</span><span class="desc">Latency · length · format.</span></div>
+      <div class="row"><span class="n">5</span><span class="lead">UX</span><span class="desc">Usable by the person you built it for.</span></div>
+    </div>
+    <div class="foot2">Five types is the <em>floor</em>, not a target — add a case each time you find a new way to break it.</div>
+  </section>
+
+  <!-- 26 · LIVE DEMO (trigger) -->
+  <section class="slide divider stage3-divider">
+    <span class="eyebrow">Stage 3 · live demo · /pm-critic + /eval-critic</span>
+    <h1>Live demo</h1>
+    <div class="tag">/pm-critic scope → /eval-critic → runnable tests</div>
+    <div class="eval-def"><span>5 evals generated</span><b>·</b><span>1 fails on purpose</span></div>
+    <div class="rule"></div>
+  </section>
+
+  <!-- 27 · THE EVAL YOU JUST WROTE (summary) -->
+  <section class="slide evalcode wrote stage3">
+    <div class="head"><span class="eyebrow">Eval as spec · what we just wrote</span><h1>The eval you just <em>wrote</em></h1></div>
+    <div class="eval-flow"><span>Requirement</span><b>→</b><span>Rubric</span><b>→</b><span>Eval case</span><b>→</b><span>Check</span></div>
+    <pre class="dataset"><code><b>requirement:</b> <i>"Every condition it suggests cites a source."</i>
+
+<b>rubric:</b>      <u># one — defines good &amp; bad for the whole requirement</u>
+  <b>good:</b>      <i>Every suggested condition names a source you can look up.</i>
+  <b>bad:</b>       <em>Reads fine, but suggests conditions with no sources.</em>
+  <b>auto-fail:</b> <em>A suggested condition with no source at all.</em>
+
+<b>eval_case:</b>   <u># runnable check — one input, judged on the rubric</u>
+  <b>input:</b>  "Exhausted for months, irregular periods, weight gain."
+  <b>judge:</b>  "Does every condition it suggests cite a source?"
+  <b>assert:</b> YES → <i>green</i> · NO → <em>red</em></code></pre>
+  </section>
+
+  <!-- 28 · WHAT YOU JUST SAW -->
+  <section class="slide justsaw stage3">
+    <div class="head"><span class="eyebrow">Eval as spec</span><h1>What you just saw</h1></div>
+    <div class="rows">
+      <div class="row"><span class="n">1</span><p>Scoped it with <b>/pm-critic</b> → one clear metric.</p></div>
+      <div class="row"><span class="n">2</span><p><b>/eval-critic</b> turned the spec into runnable tests.</p></div>
+      <div class="row"><span class="n">3</span><p>A red eval caught a bug I'd have shipped.</p></div>
+    </div>
+    <div class="card strip"><span class="arr">▸</span><h3>Turn product judgment into a checkable contract.</h3></div>
+  </section>
+
+  <!-- 29 · SPRINT (instructions) -->
+  <section class="slide sprint stage3">
+    <div class="head"><span class="eyebrow">Sprint · 20 min · shared practice app</span><h1>Run the <em>loop</em> yourself.</h1></div>
+    <div class="rows">
+      <div class="row"><span class="n">SCOPE</span><p><b class="sk-pm">/pm-critic</b> — scope the spec for Untangle.</p></div>
+      <div class="row"><span class="n">EVAL</span><p><b class="sk-ev">/eval-critic</b> — write one eval for a gap.</p></div>
+      <div class="row"><span class="n">RED</span><p><code>uv run pytest evals/</code> → your eval fails.</p></div>
+      <div class="row"><span class="n">GREEN</span><p>Fix <code>app/agent.py</code> → re-run until it passes.</p></div>
+    </div>
+    <div class="card clone">
+      <div class="clonebar"><span class="lbl">Clone &amp; run</span><button class="copybtn" type="button" aria-label="Copy the clone command">⧉ Copy</button></div>
+      <pre><code>git clone https://github.com/jphreid/ai4good-sprint-starter.git && cd ai4good-sprint-starter
+uv run pytest evals/ -v --tb=line</code></pre>
+      <span class="aside">Full steps in the repo README · help in the chat</span>
+    </div>
+  </section>
+
+  <!-- 30 · (20-MIN SPRINT) timer -->
+  <section class="slide sprint-timer stage3" data-sprint-timer>
+    <div class="head"><span class="eyebrow">Sprint · in progress</span><h1>20-minute <em>sprint</em></h1></div>
+    <div class="clock" id="sprintTimer">20:00</div>
+    <div class="sub">Heads down. Run the loop on Untangle.</div>
+    <div class="rows">
+      <div class="row"><span class="dot"></span><p>Write one eval → <b>red</b> → fix → <b>green</b></p></div>
+      <div class="row"><span class="dot"></span><p>Use one synthetic letter from <code>data/</code></p></div>
+      <div class="row"><span class="dot"></span><p>Use <b class="sk-pm">/pm-critic</b> + <b class="sk-ev">/eval-critic</b>; keep the example green</p></div>
+    </div>
+    <div class="card strip"><span class="arr">▸</span><h3>Stuck? Drop it in the chat.</h3><span class="aside">P pause · R reset</span></div>
+  </section>
+
+  <!-- 31 · STAGE 4 — MVP -->
+  <section class="slide divider stage4-divider">
+    <span class="eyebrow">Stage 4</span>
+    <h1>MVP</h1>
+    <div class="tag">What do you build — with a spec in hand?</div>
+    <div class="phase-rail"><span>Crawl</span><b>→</b><span>Walk</span><b>→</b><span>Run</span></div>
+    <div class="rule"></div>
+  </section>
+
+  <!-- 32 · MINIMUM VALUABLE PRODUCT -->
+  <section class="slide cwr stage4">
+    <div class="head"><span class="eyebrow">MVP</span><h1>Minimum <em>valuable</em> product.</h1></div>
+    <div class="vers">
+      <div class="vhead"><span></span><span>Build</span><span>Goal</span><span>Earns</span></div>
+      <div class="card v"><span class="vlabel">Crawl · v0</span><p>Must-have requirements</p><p>Real user value now</p><p>Evidence to continue</p></div>
+      <div class="card v"><span class="vlabel">Walk · v1</span><p>Reliability + repeatability</p><p>Same value, safer</p><p>Confidence to scale</p></div>
+      <div class="card v"><span class="vlabel">Run · later</span><p>North Star capability</p><p>Full product promise</p><p>Trust in autonomy</p></div>
+    </div>
+    <div class="card strip"><span class="arr">▸</span><h3>Each phase proves enough value and trust to earn the next.</h3></div>
+  </section>
+
+  <!-- 33 · SYMPTOMSCOUT — CRAWL, WALK, RUN -->
+  <section class="slide cwr stage4">
+    <div class="head"><span class="eyebrow">MVP · SymptomScout</span><h1>SymptomScout: crawl → walk → <em>run</em></h1></div>
+    <div class="vers">
+      <div class="vhead"><span></span><span>Interface</span><span>Human role</span><span>Ship when</span></div>
+      <div class="card v"><span class="vlabel">Crawl · v0</span><p>Plain chat</p><p>You draft</p><p>Faster than before</p></div>
+      <div class="card v"><span class="vlabel">Walk · v1</span><p>Retrieval + citations</p><p>You edit</p><p>Evals beat v0</p></div>
+      <div class="card v"><span class="vlabel">Run · later</span><p>Agentic workflow</p><p>You monitor</p><p>Failures are boring</p></div>
+    </div>
+    <div class="card strip"><span class="arr">▸</span><h3>Same evals across all three phases.</h3><img class="app-badge" src="images/SymptomScout.png" alt="SymptomScout"></div>
+  </section>
+
+  <!-- 34 · STAGE 5 — PROJECT MANAGEMENT -->
+  <section class="slide divider stage5-divider">
+    <span class="eyebrow">Stage 5</span>
+    <h1>Execution</h1>
+    <div class="tag">You have a spec. You have a phasing plan.<br>Now: who does what, when.</div>
+    <div class="phase-rail"><span>Commitments</span><b>▸</b><span>fixed</span><span>Build</span><b>▸</b><span>iterative</span></div>
+    <div class="rule"></div>
+  </section>
+
+  <!-- 35 · TWO WAYS TO RUN A PROJECT -->
+  <section class="slide tworun stage5">
+    <div class="head"><span class="eyebrow">Project management</span><h1>Two modes. Use <em>both</em>.</h1></div>
+    <div class="card col"><span class="k">Waterfall</span><p>Plan → build → ship.</p><p>Locks commitments.</p><p class="best">Good for: grants · compliance · deliverables.</p></div>
+    <div class="card col"><span class="k">Agile</span><p>Plan a little. Build. Repeat.</p><p>Absorbs discovery.</p><p class="best">Good for: model behavior · feedback · unknowns.</p></div>
+    <div class="bottom2">Fix the promise. Iterate the build.</div>
+  </section>
+
+  <!-- 36 · THE HONEST TAKE FOR AI4GOOD -->
+  <section class="slide honest stage5">
+    <div class="head"><span class="eyebrow">Project management</span><h1>The <em>honest</em> take for AI4Good</h1></div>
+    <div class="cols2">
+      <div class="card grp"><span class="glabel">Fixed commitments</span><p>Deadline (Jun 23) · scoped promise · judges.</p></div>
+      <div class="card grp"><span class="glabel">Iterative build</span><p>Improve evals · re-scope features · weekly demo.</p></div>
+    </div>
+    <div class="card strip"><span class="arr">▸</span><h3>Fix what you owe. Iterate how you get there.</h3></div>
+  </section>
+
+  <!-- 37 · WHAT'S ACTUALLY NEW IN 2026 -->
+  <section class="slide new2026 stage5">
+    <div class="head"><span class="eyebrow">Project management</span><h1>Ceremonies don't change. The <em>artifact</em> does.</h1><div class="sub">Same rituals. New thing on the table: the eval.</div></div>
+    <div class="rows">
+      <div class="row"><span class="lead">Planning</span><span class="desc">What evals must pass to ship?</span></div>
+      <div class="row"><span class="lead">Standup</span><span class="desc">Which evals moved — and which way?</span></div>
+      <div class="row"><span class="lead">Retro</span><span class="desc">Which evals surprised us?</span></div>
+      <div class="row"><span class="lead">Scope</span><span class="desc">If it is not in an eval, it is not in scope.</span></div>
+    </div>
+    <div class="foot3">PM work shifts from status theatre to evidence.</div>
+  </section>
+
+  <!-- 38 · A GANTT THAT SURVIVES REALITY -->
+  <section class="slide gantt stage5">
+    <div class="head"><span class="eyebrow">Project management</span><h1>A Gantt that survives reality</h1></div>
+    <div class="weeks"><span>Task</span><span>Week 1</span><span>Week 2</span><span>Week 3</span><span>Week 4</span></div>
+    <div class="chart">
+      <div class="task">Freeze eval set<small class="cp">+ MVP boundary</small></div>
+      <div class="lane"><span class="bar cp a">scope + evals + crawl</span><span class="ms"></span></div>
+
+      <div class="task">Build thin slice<small class="cp">Crawl</small></div>
+      <div class="lane"><span class="bar cp b">end-to-end</span></div>
+
+      <div class="task">Data + knowledge base<small>Parallel</small></div>
+      <div class="lane"><span class="bar par c">gather data</span><span class="slack cs"></span></div>
+
+      <div class="task">Red → green loop<small class="cp">Walk</small></div>
+      <div class="lane"><span class="bar cp d">make failing evals pass</span></div>
+
+      <div class="task">Harden + safety<small class="cp">Run</small></div>
+      <div class="lane"><span class="bar cp e">reliability</span></div>
+
+      <div class="task">User feedback<small>Parallel</small></div>
+      <div class="lane"><span class="bar par f">test</span><span class="slack fs"></span></div>
+
+      <div class="task">Record demo<small class="cp">Ship</small></div>
+      <div class="lane"><span class="bar cp g">proof</span></div>
+    </div>
+    <div class="legend">
+      <span><i class="sw cp"></i><b>Critical path</b> — freeze evals → crawl → red→green → run → demo</span>
+      <span><i class="sw par"></i><b>Parallel work</b> + slack</span>
+      <span><i class="dia"></i>Eval set frozen</span>
+    </div>
+  </section>
+
+  <!-- 39 · CEREMONIES FOR A 3-WEEK PROJECT -->
+  <section class="slide ceremonies stage5">
+    <div class="head"><span class="eyebrow">Project management</span><h1>Ceremonies for a 3-week project</h1></div>
+    <div class="rows">
+      <div class="row"><span class="when">Mon</span><span class="what">Plan</span><span class="dur">30m</span><span class="ask">Which eval threshold moves?</span></div>
+      <div class="row"><span class="when">Daily</span><span class="what">Standup</span><span class="dur">as needed</span><span class="ask">What blocks the target?</span></div>
+      <div class="row"><span class="when">Midweek</span><span class="what">Eval review</span><span class="dur">60m</span><span class="ask">What regressed, and why?</span></div>
+      <div class="row"><span class="when">Fri</span><span class="what">Mini-demo</span><span class="dur">60m</span><span class="ask">Show one working + one broken.</span></div>
+      <div class="row"><span class="when">End</span><span class="what">Retro</span><span class="dur">60m</span><span class="ask">What did the evals tell us?</span></div>
+    </div>
+  </section>
+
+  <!-- 40 · BRIDGE TO WORKSHOP 2 -->
+  <section class="slide handoff">
+    <div class="head"><span class="eyebrow">Bridge to Workshop 2 (June 10)</span><h1>Make the red turn <em>green</em>.</h1></div>
+    <div class="handoff-grid">
+      <div class="card"><span class="glabel">Today</span><span class="item">Requirement</span><span class="item">Rubric</span><span class="item">Eval signal</span></div>
+      <div class="arrow">→</div>
+      <div class="card next"><span class="glabel">Workshop 2 (June 10)</span><span class="item">SymptomScout</span><span class="item">Build scaffold</span><span class="item">Red → green</span></div>
+    </div>
+    <div class="thesis">The loop is the sprint contract: rubric → eval → red/green.</div>
+  </section>
+
+  <!-- 41 · Q&A -->
+  <section class="slide divider qna">
+    <span class="eyebrow">Before we close</span>
+    <h1>Questions</h1>
+    <div class="prompt">If quiet: <em>What feels uncomfortable about writing the eval before the code?</em></div>
+    <div class="rule"></div>
+  </section>
+
+  <!-- 42 · THANK YOU -->
+  <section class="slide divider">
+    <h1>Thank you.</h1>
+    <div class="tag">Workshop 2 (June 10): SymptomScout.<br>We turn red into green.</div>
+    <div class="rule"></div>
+    <div class="contact">jreid@microsoft.com</div>
+  </section>
+
+</div>
+<div id="overview" class="overview"></div>
+<div id="ovhint" class="overview-hint" style="display:none">click a slide · esc to close</div>
+
+<div class="nav" id="nav"></div>
+<div class="hud"><span>Product Management for AI</span><span><b id="cur">1</b> / <b id="tot">20</b> · ← → · 1–5 jumps · esc=overview</span></div>
+<script>
+  const slides=[...document.querySelectorAll('.slide')];let i=0;
+  const ov=document.getElementById('overview'), ovhint=document.getElementById('ovhint'), nav=document.getElementById('nav');
+
+  // section map: [start,end] are 0-based inclusive slide ranges; c = stage accent
+  const SECTIONS=[
+    {label:'Intro', c:'#3CE6B0', start:0,  end:4 },
+    {label:'1',     c:'#3CE6B0', start:5,  end:10},
+    {label:'2',     c:'#8B7CFF', start:11, end:20},
+    {label:'3',     c:'#FF7EB6', start:21, end:29},
+    {label:'4',     c:'#58A6FF', start:30, end:32},
+    {label:'5',     c:'#FFC24B', start:33, end:38},
+    {label:'End',   c:'#3CE6B0', start:39, end:41},
+  ];
+  const STAGE_KEYS={'1':1,'2':2,'3':3,'4':4,'5':5}; // number keys jump to a stage divider
+  const sectionOf=n=>SECTIONS.findIndex(s=>n>=s.start&&n<=s.end);
+  const slideFromHash=()=>{
+    const n=Number.parseInt(location.hash.slice(1),10);
+    return Number.isInteger(n)&&n>=1&&n<=slides.length?n-1:0;
+  };
+
+  // build the stage shortcut row once
+  const stagesEl=document.createElement('div'); stagesEl.className='stages';
+  const dotsEl=document.createElement('div'); dotsEl.className='dots';
+  SECTIONS.forEach((s,si)=>{
+    const b=document.createElement('button'); b.className='stg'; b.style.setProperty('--c',s.c);
+    b.title='Stage '+s.label; b.textContent=s.label;
+    b.addEventListener('click',()=>show(s.start));
+    stagesEl.appendChild(b);
+  });
+  nav.append(stagesEl,dotsEl);
+  let dotsSection=-1;
+  const updateNav=()=>{
+    const si=sectionOf(i), sec=SECTIONS[si];
+    [...stagesEl.children].forEach((b,x)=>b.classList.toggle('on',x===si));
+    if(si!==dotsSection){ // rebuild dots only when the stage changes
+      dotsSection=si; dotsEl.innerHTML=''; dotsEl.style.setProperty('--cd',sec.c);
+      for(let n=sec.start;n<=sec.end;n++){
+        const d=document.createElement('button'); d.className='dot';
+        d.addEventListener('click',()=>show(n)); dotsEl.appendChild(d);
+      }
+    }
+    [...dotsEl.children].forEach((d,x)=>d.classList.toggle('on',sec.start+x===i));
+  };
+
+  const show=n=>{
+    i=Math.max(0,Math.min(n,slides.length-1));
+    slides.forEach((s,x)=>s.classList.toggle('active',x===i));
+    document.getElementById('cur').textContent=i+1;
+    updateNav();
+    syncSprintTimer();
+    const hash='#'+(i+1);
+    if(location.hash!==hash)history.replaceState(null,'',hash);
+  };
+
+  // ── Overview (Esc) — rebuilt fresh on every open so it always matches the deck ──
+  const buildOverview=()=>{
+    ov.innerHTML='';
+    slides.forEach((s,idx)=>{
+      const t=document.createElement('div'); t.className='thumb';
+      const scaler=document.createElement('div'); scaler.className='scaler';
+      const clone=s.cloneNode(true); clone.classList.add('active');
+      scaler.appendChild(clone);
+      const num=document.createElement('div'); num.className='num'; num.textContent=idx+1;
+      t.append(scaler,num);
+      t.addEventListener('click',ev=>{ev.stopPropagation();show(idx);closeOv();});
+      ov.appendChild(t);
+    });
+  };
+  const markCur=()=>[...ov.children].forEach((t,x)=>t.classList.toggle('cur',x===i));
+  const openOv=()=>{buildOverview();markCur();ov.classList.add('show');ovhint.style.display='block';
+    ov.querySelector('.thumb.cur')?.scrollIntoView({block:'center'});};
+  const closeOv=()=>{ov.classList.remove('show');ovhint.style.display='none';};
+  const ovOpen=()=>ov.classList.contains('show');
+
+  const timerSlide=document.querySelector('[data-sprint-timer]');
+  const timerEl=document.getElementById('sprintTimer');
+  const TIMER_START=20*60;
+  let timerRemaining=TIMER_START, timerId=null, timerStarted=false, timerPaused=false;
+  const fmt=s=>`${Math.floor(s/60)}:${String(s%60).padStart(2,'0')}`;
+  const renderTimer=()=>{ if(timerEl)timerEl.textContent=fmt(timerRemaining); };
+  const stopTimer=()=>{ if(timerId){clearInterval(timerId);timerId=null;} };
+  const tick=()=>{
+    if(timerPaused)return;
+    timerRemaining=Math.max(0,timerRemaining-1);
+    renderTimer();
+    if(timerRemaining===0)stopTimer();
+  };
+  const startTimer=()=>{
+    if(!timerEl || timerId || timerRemaining===0)return;
+    timerStarted=true; timerPaused=false; renderTimer(); timerId=setInterval(tick,1000);
+  };
+  const syncSprintTimer=()=>{ if(slides[i]===timerSlide && !timerStarted)startTimer(); else if(slides[i]!==timerSlide)stopTimer(); };
+  renderTimer();
+
+  addEventListener('keydown',e=>{
+    if(e.key==='Escape'){ovOpen()?closeOv():openOv();return;}
+    if(ovOpen())return;
+    if(slides[i]===timerSlide && e.key.toLowerCase()==='p'){timerPaused=!timerPaused;return;}
+    if(slides[i]===timerSlide && e.key.toLowerCase()==='r'){stopTimer();timerRemaining=TIMER_START;timerStarted=false;timerPaused=false;renderTimer();startTimer();return;}
+    if(['ArrowRight',' ','PageDown'].includes(e.key))show(i+1);
+    if(['ArrowLeft','PageUp'].includes(e.key))show(i-1);
+    if(STAGE_KEYS[e.key]!==undefined)show(SECTIONS[STAGE_KEYS[e.key]].start); // 1–5 jump to a stage
+  });
+
+  // navigation is arrow-keys only — clicks never change slides (text stays selectable)
+
+  // Copy buttons (e.g. the sprint clone command) — copy the sibling <code> text.
+  document.querySelectorAll('.copybtn').forEach(btn=>{
+    btn.addEventListener('click',ev=>{
+      ev.stopPropagation();
+      const code=btn.parentElement.querySelector('code');
+      const text=code?code.innerText:'';
+      const done=()=>{const o=btn.textContent;btn.textContent='✓ Copied';btn.classList.add('copied');setTimeout(()=>{btn.textContent=o;btn.classList.remove('copied');},1400);};
+      const fallback=()=>{const ta=document.createElement('textarea');ta.value=text;ta.style.position='fixed';ta.style.opacity='0';document.body.appendChild(ta);ta.select();try{document.execCommand('copy');}catch(_){}document.body.removeChild(ta);done();};
+      if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(done).catch(fallback);}else{fallback();}
+    });
+  });
+
+  document.getElementById('tot').textContent=slides.length;
+  show(slideFromHash()); // initialise slide + stage nav; refresh keeps the current slide
+</script>
+</body>
+</html>

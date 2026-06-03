@@ -1,10 +1,17 @@
 # Eval Sprint — scope it, test it, make it pass
 
-**20 minutes.** You just watched a PM turn a requirement into a runnable test,
-run it, and fix what failed. Now **you** run that loop yourself — on a shared
-app so everyone starts from the same place: **Untangle**, a plain-language
-explainer for confusing official letters (a benefits review, an eviction notice,
-a denial).
+**~20 minutes · self-paced · no API key needed.** In Workshop 1 you watched a PM
+turn a product requirement into a runnable test, run it, and fix what failed. We
+ran out of time to do it together — so this guide walks you through running that
+loop **yourself**, start to finish, on your own machine. Nothing here needs a
+facilitator; every command is written out so you can copy-paste it.
+
+> 📊 **The Workshop 1 slides:** https://jphreid.github.io/ai4good-sprint-starter/slides/
+> — skim them first if you missed the talk or want the *why* behind this sprint.
+
+Everyone works on the same small app, so you start from the same place a room
+full of trainees would: **Untangle**, a plain-language explainer for confusing
+official letters (a benefits review, an eviction notice, a denial).
 
 You'll use **two review-board skills** and finish with a test you took from red
 to green:
@@ -12,8 +19,9 @@ to green:
 > **`/pm-critic`** (scope the spec) → **`/eval-critic`** (turn the spec into evals) →
 > run them **red** → fix the app → **green**.
 
-You are *not* inventing your own project today — that's Wednesday. Today the app
-is already here, and it's deliberately incomplete so there's a real gap to close.
+You are *not* inventing your own project here — that comes in Workshop 2 (June
+10). Today the app is already here, and it's deliberately incomplete so there's a
+real gap to close.
 
 ### The words you'll hear (plain version)
 
@@ -31,9 +39,35 @@ You'll work in two places: a **terminal** (the text command window) and **Claude
 Code**. You don't need to know Git or pytest — every command is written out below,
 so you can copy-paste it.
 
+### The review board — the skills you'll use
+
+A **review-board skill** is a reviewer you run *inside Claude Code* by typing its
+name (like `/pm-critic`). Each one bottles up a single professional practice — how
+a PM scopes a product, how an eval engineer specs it — so you can run that practice
+on your own project, on demand. Each skill is **dual-mode**: it can **generate** an
+artifact from scratch, or **audit** one you already have and tell you what's weak.
+
+The full board is **five** skills. This sprint uses the first two:
+
+- **`/pm-critic`** — *Is this the right thing to build?* Scopes the app and writes
+  the spec — the AI Canvas + a one-pager: the prediction, the one success metric,
+  and who stays in control of the real decision.
+- **`/eval-critic`** — *What do "good" and "bad" look like, in code?* Turns that
+  spec into runnable tests, each with a **rubric** (good / bad / auto-fail).
+
+You'll meet the other three in **Workshop 2** — `/eng-critic` (make it work),
+`/design-critic` (make it usable), `/safety-critic` (make it safe to ship). Run on
+your own forked project, the five together are a review board you can keep using
+long after the Lab.
+
 ---
 
 ## Setup · 2 min
+
+**You need:** Claude Code installed and signed in (the same one from the Lab), and
+[`uv`](https://docs.astral.sh/uv/) — the Python runner the commands use — on your
+machine. **No Anthropic API key is required:** the whole sprint runs offline on
+plain Python, so there's nothing to pay for or sign up for.
 
 Open a terminal and paste these two lines. The first downloads the app; the
 second runs its tests so you can see them pass before you change anything:
@@ -167,7 +201,7 @@ When it's green, you've closed the gap your spec identified.
 
 ## What you did today
 
-In 20 minutes you ran the real loop end to end:
+You just ran the real loop end to end:
 
 1. **`/pm-critic`** — scoped the spec (what good looks like, who stays in control).
 2. **`/eval-critic`** — turned that spec into runnable tests over the whole dataset.
@@ -176,7 +210,24 @@ In 20 minutes you ran the real loop end to end:
 > The modern PM artifact isn't just a PRD. It's an eval set that makes the
 > product promise checkable — and a loop that turns red into green.
 
-On Wednesday you run this exact loop on a much bigger app, SymptomScout.
+In **Workshop 2 (June 10)** you run this exact loop on a much bigger app,
+SymptomScout.
+
+## If you get stuck
+
+You're doing this solo, so here are the snags that trip people up:
+
+- **`uv: command not found`** → install [`uv`](https://docs.astral.sh/uv/), then
+  re-run the command.
+- **`/eval-critic` can't find your spec** → run `/pm-critic` (Move 1) first;
+  `/eval-critic` reads the `product/` files it writes.
+- **Your new eval is green on the first run (never goes red)** → the check is too
+  loose — a lazy answer would pass it. Ask `/eval-critic` to tighten it until a
+  bad answer would fail.
+- **You can't get it green** → that's fine. Knowing exactly what's still red *is*
+  the spec working. Note what's red and bring it to Workshop 2.
+- **Anything else** → tell Claude Code what you ran and what you saw. It's in the
+  repo with you and can read every file here.
 
 ## What's in here
 
